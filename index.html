@@ -1,0 +1,1871 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLC Full-Bridge Resonant Converter Workbench — Infineon AN 2012-09</title>
+  <style>
+    :root {
+      --bg-page: #f1f5f9;
+      --bg-panel: #ffffff;
+      --bg-subtle: #f8fafc;
+      --border-color: #cbd5e1;
+      --border-strong: #94a3b8;
+      --text-main: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --blue-primary: #1d4ed8;
+      --blue-bg: #eff6ff;
+      --blue-border: #93c5fd;
+      --green-safe: #047857;
+      --green-bg: #ecfdf5;
+      --green-border: #6ee7b7;
+      --red-hazard: #b91c1c;
+      --red-bg: #fef2f2;
+      --red-border: #fca5a5;
+      --amber-warn: #b45309;
+      --amber-bg: #fffbeb;
+      --amber-border: #fcd34d;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+      --font-math: 'Cambria Math', 'Latin Modern Math', 'STIX Two Math', 'Times New Roman', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Header Bar */
+    .header-bar {
+      height: 60px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .header-title-group {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .header-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .header-ref {
+      font-size: 13px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      border-left: 1px solid var(--border-color);
+      padding-left: 12px;
+    }
+
+    .mode-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .mode-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .quick-summary {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-panel);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+    }
+
+    .btn:hover {
+      background: var(--bg-page);
+      border-color: var(--border-strong);
+    }
+
+    .btn-blue {
+      background: var(--blue-bg);
+      color: var(--blue-primary);
+      border-color: var(--blue-border);
+    }
+
+    .btn-blue:hover {
+      background: #dbeafe;
+    }
+
+    .btn-amber {
+      background: var(--amber-bg);
+      color: var(--amber-warn);
+      border-color: var(--amber-border);
+    }
+
+    .btn-amber:hover {
+      background: #fef3c7;
+    }
+
+    /* Main Workspace Split */
+    .workspace {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* Left Parameter Sidebar */
+    .sidebar {
+      width: 440px;
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow-y: auto;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .sidebar-section {
+      padding: 14px 18px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+    }
+
+    .param-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .param-row:last-child {
+      border-bottom: none;
+    }
+
+    .param-label-group {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .param-symbol {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      min-width: 52px;
+    }
+
+    .param-symbol.interactive {
+      color: var(--blue-primary);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .param-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .param-input-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .formula-chip {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      cursor: pointer;
+    }
+
+    .formula-chip:hover {
+      background: #dbeafe;
+    }
+
+    .num-input {
+      width: 106px;
+      padding: 4px 8px;
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 600;
+      text-align: right;
+      color: var(--text-main);
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+    }
+
+    .num-input.coupled {
+      background: #f8fafc;
+      border-color: #93c5fd;
+      color: #1e3a8a;
+    }
+
+    .num-input:focus {
+      outline: none;
+      border-color: var(--blue-primary);
+      box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+      background: #ffffff;
+    }
+
+    .param-unit {
+      width: 38px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Telemetry Readout Cards */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 6px;
+    }
+
+    .telemetry-card {
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      cursor: pointer;
+      transition: border-color 0.12s, background 0.12s;
+    }
+
+    .telemetry-card:hover {
+      border-color: var(--blue-primary);
+      background: var(--blue-bg);
+    }
+
+    .telemetry-card.highlight {
+      background: #eff6ff;
+      border-color: #93c5fd;
+    }
+
+    .telemetry-card.highlight-green {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+    }
+
+    .telemetry-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+
+    .telemetry-sym {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--blue-primary);
+      text-decoration: underline;
+    }
+
+    .telemetry-val {
+      font-family: var(--font-mono);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .telemetry-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .telemetry-unit {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    /* Right Charts Container */
+    .charts-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      gap: 12px;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .chart-panel {
+      flex: 1;
+      min-height: 0;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-bar {
+      height: 44px;
+      padding: 0 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .panel-hint {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue-primary);
+      background: var(--blue-bg);
+      border: 1px solid var(--blue-border);
+      padding: 3px 10px;
+      border-radius: 4px;
+    }
+
+    .canvas-wrap {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .scope-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Modal Styling */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      max-width: 780px;
+      width: 100%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 16px 22px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-tabs {
+      padding: 10px 22px;
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 5px;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--blue-primary);
+      color: #ffffff;
+      border-color: var(--blue-primary);
+    }
+
+    .modal-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .formula-card {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .formula-display-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 18px 22px;
+      border-radius: 6px;
+      font-family: var(--font-math);
+      font-size: 21px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 82px;
+      overflow-x: auto;
+    }
+
+    /* True Mathematical Typesetting Helpers (Unbroken SVG Radical) */
+    .math-expr {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .math-var {
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .math-num {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .math-op {
+      font-style: normal;
+      padding: 0 2px;
+    }
+
+    .math-frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 4px;
+    }
+
+    .math-frac > .num {
+      border-bottom: 1.8px solid #0f172a;
+      padding: 0 10px 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .math-frac > .den {
+      padding: 4px 10px 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Seamless scalable SVG + CSS Square Root */
+    .math-sqrt {
+      display: inline-flex;
+      align-items: stretch;
+      vertical-align: middle;
+      margin: 2px 2px;
+    }
+
+    .math-sqrt-stem {
+      width: 16px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .math-sqrt-stem svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .math-sqrt > .radicand {
+      border-top: 1.8px solid #0f172a;
+      padding: 4px 8px 2px 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: -0.5px;
+    }
+
+    sub {
+      font-size: 0.68em;
+      vertical-align: sub;
+      font-style: normal;
+      font-family: var(--font-sans);
+      font-weight: 600;
+    }
+
+    sup {
+      font-size: 0.68em;
+      vertical-align: super;
+      font-style: normal;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Header -->
+  <header class="header-bar">
+    <div class="header-title-group">
+      <h1 class="header-title">LLC Full-Bridge Resonant Converter Analysis</h1>
+      <span class="header-ref">Infineon AN 2012-09 (FHA Model)</span>
+    </div>
+
+    <div id="modeBadge" class="mode-badge">
+      <span id="modeDot" class="mode-dot"></span>
+      <span id="modeText">INDUCTIVE — AT RESONANCE</span>
+    </div>
+
+    <div class="header-right">
+      <div class="quick-summary">
+        <div><span style="color:#64748b">fs:</span> <strong id="hdrFs">110.67 kHz</strong></div>
+        <span style="color:#cbd5e1">|</span>
+        <div><span style="color:#64748b">Fx:</span> <strong id="hdrFx" style="color:#1d4ed8">1.000</strong></div>
+        <span style="color:#cbd5e1">|</span>
+        <div><span style="color:#64748b">Gain K:</span> <strong id="hdrK">1.000</strong></div>
+        <span style="color:#cbd5e1">|</span>
+        <div><span style="color:#64748b">Vo:</span> <strong id="hdrVo" style="color:#047857">400.0 V</strong></div>
+        <span style="color:#cbd5e1">|</span>
+        <div><span style="color:#64748b">Io:</span> <strong id="hdrIo" style="color:#047857">0.63 A</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <div class="workspace">
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <!-- Section 1: Tank Components & Coupled Design Parameters (fr, m, Q, fs, Fx) -->
+      <div class="sidebar-section">
+        <div class="section-header">
+          <span class="section-title">1. Resonant Tank &amp; Design Parameters</span>
+          <span id="turnsRatioText" style="font-family:var(--font-mono);font-size:13px;color:#475569;font-weight:600">1 : 12.0</span>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Lr">Lr</span>
+            <span class="param-desc">Resonant Inductance</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Lr">Eq</button>
+            <input id="inp_Lr" type="number" step="0.1" min="0.05" class="num-input" />
+            <span class="param-unit">µH</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Cr">Cr</span>
+            <span class="param-desc">Resonant Capacitance</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Cr">Eq</button>
+            <input id="inp_Cr" type="number" step="10" min="0.5" class="num-input" />
+            <span class="param-unit">nF</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Lm">Lm</span>
+            <span class="param-desc">Magnetizing Inductance</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Lm">Eq</button>
+            <input id="inp_Lm" type="number" step="0.2" min="0.1" class="num-input" />
+            <span class="param-unit">µH</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="fr">fr</span>
+            <span class="param-desc">Resonant Frequency</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="fr">Eq</button>
+            <input id="inp_fr" type="number" step="1" min="1" class="num-input coupled" title="Adjust fr to automatically solve for Lr and Cr" />
+            <span class="param-unit">kHz</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="m">m</span>
+            <span class="param-desc">Inductance Ratio (Lr+Lm)/Lr</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="m">Eq</button>
+            <input id="inp_m" type="number" step="0.1" min="1.1" class="num-input coupled" title="Adjust m to automatically solve for Lm" />
+            <span class="param-unit">ratio</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Q">Q</span>
+            <span class="param-desc">Quality Factor</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Q">Eq</button>
+            <input id="inp_Q" type="number" step="0.02" min="0.02" class="num-input coupled" title="Adjust Q to automatically solve for Lr, Cr, and Lm" />
+            <span class="param-unit">factor</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Fx">fs</span>
+            <span class="param-desc">Switching Frequency</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Fx">Eq</button>
+            <input id="inp_fs" type="number" step="1" min="5" class="num-input coupled" />
+            <span class="param-unit">kHz</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Fx">Fx</span>
+            <span class="param-desc">Normalized Freq (fs/fr)</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Fx">Eq</button>
+            <input id="inp_Fx" type="number" step="0.02" min="0.1" max="2.0" class="num-input coupled" />
+            <span class="param-unit">fs/fr</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Transformer & Terminal Specifications (Includes Vo and Io) -->
+      <div class="sidebar-section">
+        <div class="section-header">
+          <span class="section-title">2. Transformer &amp; Terminal Specs</span>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Rac">Np/Ns</span>
+            <span class="param-desc">Primary / Secondary Ratio</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Rac">Eq</button>
+            <input id="inp_npNs" type="number" step="0.005" min="0.005" class="num-input" />
+            <span class="param-unit">ratio</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Vo_predicted">Vin</span>
+            <span class="param-desc">Input DC Voltage</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Vo_predicted">Eq</button>
+            <input id="inp_Vin" type="number" step="1" min="1" class="num-input" />
+            <span class="param-unit">V</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Vo_predicted">Vo</span>
+            <span class="param-desc">Target Output Voltage</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Vo_predicted">Eq</button>
+            <input id="inp_Vo" type="number" step="5" min="1" class="num-input" />
+            <span class="param-unit">V</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Io">Io</span>
+            <span class="param-desc">Target Output Current (Po/Vo)</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Io">Eq</button>
+            <input id="inp_Io" type="number" step="0.1" min="0.01" class="num-input coupled" title="Adjust Io to automatically update Po = Vo * Io" />
+            <span class="param-unit">A</span>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label-group">
+            <span class="param-symbol interactive" data-formula="Rac">Po</span>
+            <span class="param-desc">Output Load Power</span>
+          </div>
+          <div class="param-input-group">
+            <button class="formula-chip" data-formula="Rac">Eq</button>
+            <input id="inp_Po" type="number" step="10" min="1" class="num-input" />
+            <span class="param-unit">W</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Calculated FHA Outputs (Click any card to view formula) -->
+      <div class="sidebar-section" style="background:var(--bg-subtle);flex:1">
+        <div class="section-header">
+          <span class="section-title">3. Calculated FHA Outputs</span>
+          <button class="btn btn-blue" style="padding:4px 10px;font-size:12px" id="btnAllFormulas">Equations</button>
+        </div>
+
+        <div class="telemetry-grid">
+          <button class="telemetry-card highlight-green" data-formula="Vo_predicted">
+            <div class="telemetry-top">
+              <span>Output Voltage</span>
+              <span class="telemetry-sym">Vo,FHA</span>
+            </div>
+            <div class="telemetry-val"><span id="card_Vo">400.0</span> <span class="telemetry-unit">V</span></div>
+            <div class="telemetry-sub" id="card_Vo_target">Target Vo: 400.0 V</div>
+          </button>
+
+          <button class="telemetry-card highlight-green" data-formula="Io">
+            <div class="telemetry-top">
+              <span>Output Current</span>
+              <span class="telemetry-sym">Io,FHA</span>
+            </div>
+            <div class="telemetry-val"><span id="card_Io">0.63</span> <span class="telemetry-unit">A</span></div>
+            <div class="telemetry-sub" id="card_Io_target">Target Io: 0.63 A</div>
+          </button>
+
+          <button class="telemetry-card highlight" data-formula="K">
+            <div class="telemetry-top">
+              <span>Tank Gain</span>
+              <span class="telemetry-sym">K(Q,m,Fx)</span>
+            </div>
+            <div class="telemetry-val" id="card_K">1.0000</div>
+            <div class="telemetry-sub" id="card_K_req">Req M: 1.010</div>
+          </button>
+
+          <button class="telemetry-card" data-formula="Fx_peak">
+            <div class="telemetry-top">
+              <span>ZVS Boundary</span>
+              <span class="telemetry-sym">Fx,min</span>
+            </div>
+            <div class="telemetry-val"><span id="card_FxPeak">0.503</span> <span class="telemetry-unit" id="card_fsPeak">(55.7k)</span></div>
+            <div class="telemetry-sub" id="card_K_peak">Kmax: 1.274</div>
+          </button>
+
+          <button class="telemetry-card" data-formula="Rac">
+            <div class="telemetry-top">
+              <span>Reflected Load</span>
+              <span class="telemetry-sym">Rac</span>
+            </div>
+            <div class="telemetry-val"><span id="card_Rac">3.600</span> <span class="telemetry-unit">Ω</span></div>
+          </button>
+
+          <button class="telemetry-card" data-formula="Io">
+            <div class="telemetry-top">
+              <span>DC Load Resistance</span>
+              <span class="telemetry-sym">Ro = Vo/Io</span>
+            </div>
+            <div class="telemetry-val"><span id="card_Ro">640.0</span> <span class="telemetry-unit">Ω</span></div>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Split View: Top Gain Curve + Bottom Oscilloscope -->
+    <main class="charts-main">
+      <!-- Top Panel: Gain Chart -->
+      <section class="chart-panel">
+        <div class="panel-bar">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="panel-title">Resonant Tank Gain Characteristic — K(Q, m, Fx)</span>
+            <span class="panel-hint" id="dragHint">Click or drag operating point on curve to tune fs (110.67 kHz)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button id="btnLockPeak" class="btn btn-amber" style="padding:4px 10px;font-size:13px" title="Set switching frequency to Peak Gain boundary (Fx,min)">Set fs at Peak Gain</button>
+            <button id="btnLockFr" class="btn" style="padding:4px 10px;font-size:13px" title="Set switching frequency to Resonant Frequency (Fx = 1.0)">Set fs = fr (Fx = 1.0)</button>
+            <button id="btnToggleRef" class="btn" style="padding:4px 10px;font-size:13px">Hide Ref Q-Curves</button>
+          </div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="gainCanvas" style="cursor:pointer"></canvas>
+        </div>
+      </section>
+
+      <!-- Bottom Panel: Time-Domain Waveforms -->
+      <section class="chart-panel">
+        <div class="panel-bar">
+          <span class="panel-title">Steady-State Time-Domain Waveforms (2 Switching Cycles — Table 1)</span>
+          <div class="scope-stats">
+            <div>Vsw: <strong id="stat_Vsw" style="color:#b45309">±33 V</strong></div>
+            <div>Vo / Io: <strong id="stat_VoIo" style="color:#047857">400.0 V / 0.63 A</strong></div>
+            <div>ILr (pk / rms): <strong id="stat_ILr" style="color:#047857">16.2 A / 11.4 A</strong></div>
+            <div>ILm (pk): <strong id="stat_ILm" style="color:#1d4ed8">6.17 A</strong></div>
+            <div id="stat_fw_wrap">Freewheeling: <strong id="stat_fw" style="color:#b45309">0.0%</strong></div>
+          </div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="scopeCanvas"></canvas>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Formula Derivation Modal -->
+  <div id="formulaModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <div style="font-size:17px;font-weight:700;color:#0f172a">Mathematical Derivation</div>
+          <div id="modRef" style="font-size:13px;color:#475569;margin-top:2px">Infineon AN 2012-09</div>
+        </div>
+        <button id="btnCloseModal" class="btn" style="padding:5px 12px">Close (X)</button>
+      </div>
+      <div id="modalTabs" class="modal-tabs"></div>
+      <div class="modal-body">
+        <div>
+          <div style="font-size:12px;font-family:var(--font-mono);text-transform:uppercase;color:#1d4ed8;font-weight:700">Parameter</div>
+          <div id="modTitle" style="font-size:19px;font-weight:700;color:#0f172a;margin-top:2px"></div>
+        </div>
+        <div class="formula-card">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:6px">Standard Equation:</div>
+            <div id="modEq" class="formula-display-box"></div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:6px">Live Substitution:</div>
+            <div id="modSub" class="formula-display-box" style="color:#1e293b"></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:4px;border-top:1px solid #e2e8f0">
+            <span style="font-family:var(--font-sans);font-size:15px;font-weight:600;color:#334155">Calculated Result:</span>
+            <span id="modRes" style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:#1d4ed8"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- State & Default Infineon AN 2012-09 Parameters ---
+    const DEFAULT_STATE = {
+      Vin: 33.0,
+      Vo: 400.0,
+      Po: 250.0,
+      npNs: 0.0833,
+      Lr_uH: 2.2,
+      Cr_nF: 940.0,
+      Lm_uH: 12.2,
+      fs_kHz: 110.67
+    };
+
+    let state = { ...DEFAULT_STATE };
+    let showRefCurves = true;
+    let isDraggingGain = false;
+    let activeFormulaKey = 'K';
+
+    // Tank Gain Equation (Eq. 1 in Infineon AN 2012-09)
+    function calcTankGain(Q, m, Fx) {
+      if (Fx <= 0 || m <= 1) return 0;
+      const Fx2 = Fx * Fx;
+      const m1 = m - 1;
+      const num = Fx2 * m1;
+      const t1 = Math.pow(m * Fx2 - 1, 2);
+      const t2 = Fx2 * Math.pow(Fx2 - 1, 2) * Math.pow(m1, 2) * (Q * Q);
+      const den = Math.sqrt(t1 + t2);
+      return den > 1e-12 ? num / den : 0;
+    }
+
+    function getRac(npNs, Vo, Po) {
+      return (8 / (Math.PI * Math.PI)) * (npNs * npNs) * ((Vo * Vo) / Math.max(Po, 1));
+    }
+
+    function analyzeSystem(s) {
+      const Lr = Math.max(s.Lr_uH, 0.01) * 1e-6;
+      const Cr = Math.max(s.Cr_nF, 0.1) * 1e-9;
+      const Lm = Math.max(s.Lm_uH, 0.01) * 1e-6;
+      const Vo = Math.max(s.Vo, 1);
+      const Po = Math.max(s.Po, 1);
+      const Vin = Math.max(s.Vin, 1);
+      const npNs = Math.max(s.npNs, 0.001);
+      const fs = Math.max(s.fs_kHz, 1) * 1e3;
+
+      const fr = 1 / (2 * Math.PI * Math.sqrt(Lr * Cr));
+      const fr_kHz = fr * 1e-3;
+      const Fx = fs / fr;
+      const m = (Lr + Lm) / Lr;
+      const Ro = (Vo * Vo) / Po;
+      const Io_target = Po / Vo;
+      const Rac = getRac(npNs, Vo, Po);
+      const Z0 = Math.sqrt(Lr / Cr);
+      const Q = Z0 / Rac;
+      const K = calcTankGain(Q, m, Fx);
+      const K_required = (Vo * npNs) / Vin;
+      const Vo_predicted = (Vin / npNs) * K;
+      const Io_predicted = Vo_predicted / Ro;
+
+      const sweepPoints = [];
+      let Fx_peak = 0.1;
+      let K_peak = 0;
+      const steps = 380;
+      for (let i = 0; i <= steps; i++) {
+        const fxVal = Number((0.1 + (i / steps) * 1.9).toFixed(4));
+        const kVal = calcTankGain(Q, m, fxVal);
+        sweepPoints.push({ Fx: fxVal, K: kVal });
+        if (kVal > K_peak) {
+          K_peak = kVal;
+          Fx_peak = fxVal;
+        }
+      }
+      for (let fxFine = Math.max(0.1, Fx_peak - 0.02); fxFine <= Math.min(2.0, Fx_peak + 0.02); fxFine += 0.0005) {
+        const kFine = calcTankGain(Q, m, fxFine);
+        if (kFine > K_peak) {
+          K_peak = kFine;
+          Fx_peak = Number(fxFine.toFixed(4));
+        }
+      }
+
+      const fs_peak_kHz = Fx_peak * fr_kHz;
+      let region = 'ABOVE_RESONANCE';
+      if (Fx < Fx_peak) region = 'CAPACITIVE_HAZARD';
+      else if (Math.abs(Fx - 1.0) <= 0.008) region = 'AT_RESONANCE';
+      else if (Fx < 1.0) region = 'BELOW_RESONANCE';
+
+      const refQValues = [0.2, 0.3, 0.5, 0.7, 1.0];
+      const refCurves = refQValues.map(qRef => ({
+        Q: qRef,
+        points: sweepPoints.map(pt => ({ Fx: pt.Fx, K: calcTankGain(qRef, m, pt.Fx) }))
+      }));
+
+      return {
+        fr_kHz, Fx, m, Ro, Io_target, Rac, Z0, Q, K, K_required,
+        Vo_predicted, Io_predicted, Fx_peak, fs_peak_kHz, K_peak,
+        region, sweepPoints, refCurves
+      };
+    }
+
+    // --- Bidirectional Parameter Coupling ---
+    function handleParamEdit(field, rawVal) {
+      const val = parseFloat(rawVal);
+      if (Number.isNaN(val) || val <= 0) return;
+
+      const cur = analyzeSystem(state);
+
+      if (field === 'Lr_uH' || field === 'Cr_nF' || field === 'Lm_uH') {
+        state[field] = val;
+      } else if (field === 'fr_kHz') {
+        const fr_Hz = val * 1e3;
+        const Z0 = cur.Q * cur.Rac;
+        const Lr_H = Z0 / (2 * Math.PI * fr_Hz);
+        const Cr_F = 1 / (2 * Math.PI * fr_Hz * Z0);
+        const Lm_H = (cur.m - 1) * Lr_H;
+        state.Lr_uH = Number((Lr_H * 1e6).toFixed(3));
+        state.Cr_nF = Number((Cr_F * 1e9).toFixed(2));
+        state.Lm_uH = Number((Lm_H * 1e6).toFixed(3));
+        state.fs_kHz = Number((cur.Fx * val).toFixed(2));
+      } else if (field === 'm') {
+        const mSafe = Math.max(1.05, val);
+        state.Lm_uH = Number(((mSafe - 1) * state.Lr_uH).toFixed(3));
+      } else if (field === 'Q') {
+        const fr_Hz = cur.fr_kHz * 1e3;
+        const Z0 = val * cur.Rac;
+        const Lr_H = Z0 / (2 * Math.PI * fr_Hz);
+        const Cr_F = 1 / (2 * Math.PI * fr_Hz * Z0);
+        const Lm_H = (cur.m - 1) * Lr_H;
+        state.Lr_uH = Number((Lr_H * 1e6).toFixed(3));
+        state.Cr_nF = Number((Cr_F * 1e9).toFixed(2));
+        state.Lm_uH = Number((Lm_H * 1e6).toFixed(3));
+      } else if (field === 'fs_kHz') {
+        state.fs_kHz = val;
+      } else if (field === 'Fx') {
+        const fxClamped = Math.min(2.0, Math.max(0.1, val));
+        state.fs_kHz = Number((fxClamped * cur.fr_kHz).toFixed(2));
+      } else if (field === 'Io') {
+        state.Po = Number((state.Vo * val).toFixed(2));
+      } else {
+        state[field] = val;
+      }
+
+      renderAll(field);
+    }
+
+    // --- Waveform Generator (Table 1 in AN 2012-09) ---
+    function generateWaveforms(s, a) {
+      const fs_Hz = Math.max(s.fs_kHz, 1) * 1e3;
+      const fr_Hz = a.fr_kHz * 1e3;
+      const Ts = 1 / fs_Hz;
+      const Tr = 1 / fr_Hz;
+      const halfTs = Ts / 2;
+      const halfTr = Tr / 2;
+      const Lm_H = Math.max(s.Lm_uH, 0.01) * 1e-6;
+      const Vpri = s.npNs * s.Vo;
+
+      const tPower = a.Fx < 1.0 ? halfTr : halfTs;
+      const freewheelingRatio = (a.Fx < 1.0 && a.region !== 'CAPACITIVE_HAZARD')
+        ? Math.max(0, (halfTs - halfTr) / halfTs) : 0;
+
+      const ILm_pk = (Vpri * tPower) / (2 * Lm_H);
+      const Io = s.Po / Math.max(s.Vo, 1);
+      const Ipri_load_avg = Io / s.npNs;
+
+      const totalSamples = 600;
+      const t_us = [], Vsw = [], ILr = [], ILm = [], ID1D4 = [], ID2D3 = [];
+      let sumSqILr = 0, maxILr = 0, maxID = 0;
+
+      for (let i = 0; i <= totalSamples; i++) {
+        const t = (i / totalSamples) * (2 * Ts);
+        const tMod = t % Ts;
+        const isFirstHalf = tMod < halfTs;
+        const tau = isFirstHalf ? tMod : tMod - halfTs;
+        const sign = isFirstHalf ? 1 : -1;
+        const vswVal = sign * s.Vin;
+
+        let ilmVal = 0, ilrVal = 0, idiffPri = 0;
+
+        if (a.region === 'CAPACITIVE_HAZARD') {
+          const leadAngle = 0.45 + 0.35 * ((a.Fx_peak - a.Fx) / Math.max(a.Fx_peak, 0.1));
+          const omegaS = 2 * Math.PI * fs_Hz;
+          const Icap_pk = Math.max(ILm_pk * 1.35, Ipri_load_avg * (Math.PI / 2) * 1.4);
+          ilmVal = sign * (-ILm_pk + (2 * ILm_pk * tau) / halfTs);
+          ilrVal = sign * Icap_pk * Math.sin(omegaS * tau + leadAngle);
+          idiffPri = Math.max(0, sign * (ilrVal - ilmVal));
+        } else if (a.Fx < 1.0 - 0.008) {
+          const scaleBoost = halfTs / halfTr;
+          const Idiff_pk = Ipri_load_avg * (Math.PI / 2) * scaleBoost;
+          if (tau <= halfTr) {
+            const ilmLocal = -ILm_pk + (2 * ILm_pk * tau) / halfTr;
+            const isin = Idiff_pk * Math.sin((Math.PI * tau) / halfTr);
+            ilmVal = sign * ilmLocal;
+            ilrVal = sign * (ilmLocal + isin);
+            idiffPri = isin;
+          } else {
+            const fwProg = (tau - halfTr) / Math.max(halfTs - halfTr, 1e-9);
+            const droop = 1 - 0.04 * Math.sin((Math.PI / 2) * fwProg);
+            ilmVal = sign * ILm_pk * droop;
+            ilrVal = ilmVal;
+            idiffPri = 0;
+          }
+        } else if (a.Fx <= 1.0 + 0.008) {
+          const Idiff_pk = Ipri_load_avg * (Math.PI / 2);
+          const ilmLocal = -ILm_pk + (2 * ILm_pk * tau) / halfTs;
+          const isin = Idiff_pk * Math.sin((Math.PI * tau) / halfTs);
+          ilmVal = sign * ilmLocal;
+          ilrVal = sign * (ilmLocal + isin);
+          idiffPri = isin;
+        } else {
+          const alpha = (Math.PI * halfTs) / halfTr;
+          const avgFactor = (1 - Math.cos(alpha)) / alpha;
+          const Idiff_pk = Ipri_load_avg / Math.max(avgFactor, 0.2);
+          const ilmLocal = -ILm_pk + (2 * ILm_pk * tau) / halfTs;
+          const isin = Idiff_pk * Math.sin((Math.PI * tau) / halfTr);
+          ilmVal = sign * ilmLocal;
+          ilrVal = sign * (ilmLocal + isin);
+          idiffPri = Math.max(0, isin);
+        }
+
+        const isec = s.npNs * idiffPri;
+        t_us.push(t * 1e6);
+        Vsw.push(vswVal);
+        ILr.push(ilrVal);
+        ILm.push(ilmVal);
+        ID1D4.push(isFirstHalf ? isec : 0);
+        ID2D3.push(isFirstHalf ? 0 : isec);
+
+        sumSqILr += ilrVal * ilrVal;
+        if (Math.abs(ilrVal) > maxILr) maxILr = Math.abs(ilrVal);
+        if (isec > maxID) maxID = isec;
+      }
+
+      return {
+        t_us, Vsw, ILr, ILm, ID1D4, ID2D3,
+        ILr_pk: maxILr,
+        ILr_rms: Math.sqrt(sumSqILr / (totalSamples + 1)),
+        ILm_pk,
+        ID_pk: maxID,
+        freewheelingRatio
+      };
+    }
+
+    // --- Draw Gain Curve Canvas ---
+    let gainChartGeometry = { left: 68, right: 0, top: 34, bottom: 0, minFx: 0.1, maxFx: 2.0, maxK: 2.5 };
+
+    function drawGainChart(a) {
+      const canvas = document.getElementById('gainCanvas');
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      const W = rect.width;
+      const H = rect.height;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      const padL = 68, padR = 24, padT = 36, padB = 46;
+      const plotW = W - padL - padR;
+      const plotH = H - padT - padB;
+      const maxK = Math.max(2.4, Math.ceil(a.K_peak * 1.18 * 2) / 2);
+
+      gainChartGeometry = { left: padL, right: padL + plotW, top: padT, bottom: padT + plotH, minFx: 0.1, maxFx: 2.0, maxK };
+
+      const fxToX = fx => padL + ((fx - 0.1) / 1.9) * plotW;
+      const kToY = k => padT + plotH - (k / maxK) * plotH;
+
+      const xPeak = Math.max(padL, Math.min(padL + plotW, fxToX(a.Fx_peak)));
+      const xRes = fxToX(1.0);
+
+      // 1. Shaded Regions
+      ctx.fillStyle = 'rgba(254, 226, 226, 0.55)';
+      ctx.fillRect(padL, padT, xPeak - padL, plotH);
+      ctx.fillStyle = 'rgba(236, 253, 245, 0.55)';
+      ctx.fillRect(xPeak, padT, padL + plotW - xPeak, plotH);
+
+      // Grid lines & Ticks
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1;
+      ctx.fillStyle = '#334155';
+      ctx.font = '600 12px "JetBrains Mono", monospace';
+
+      for (let fx = 0.1; fx <= 2.001; fx += 0.1) {
+        const x = fxToX(fx);
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + plotH);
+        ctx.stroke();
+        ctx.fillText(fx.toFixed(1), x - 11, padT + plotH + 18);
+      }
+
+      const yStep = maxK <= 3.0 ? 0.5 : 1.0;
+      for (let k = 0; k <= maxK + 0.001; k += yStep) {
+        const y = kToY(k);
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + plotW, y);
+        ctx.stroke();
+        ctx.fillText(k.toFixed(1), padL - 34, y + 4);
+      }
+
+      // Region Labels
+      ctx.font = '700 12px "Inter", sans-serif';
+      if (xPeak - padL > 110) {
+        ctx.fillStyle = '#b91c1c';
+        ctx.fillText('CAPACITIVE REGION (ZCS HAZARD)', padL + 10, padT + 20);
+      }
+      ctx.fillStyle = '#047857';
+      ctx.fillText('INDUCTIVE REGION (ZVS SAFE)', xPeak + 10, padT + 20);
+
+      // Boundary Lines (Fx_peak & Fx=1)
+      ctx.save();
+      ctx.setLineDash([5, 4]);
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(xPeak, padT);
+      ctx.lineTo(xPeak, padT + plotH);
+      ctx.stroke();
+
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      ctx.moveTo(xRes, padT);
+      ctx.lineTo(xRes, padT + plotH);
+      ctx.stroke();
+      ctx.restore();
+
+      // Reference Q Curves
+      if (showRefCurves) {
+        ctx.strokeStyle = 'rgba(100, 116, 139, 0.28)';
+        ctx.lineWidth = 1.2;
+        a.refCurves.forEach(c => {
+          ctx.beginPath();
+          c.points.forEach((pt, idx) => {
+            const x = fxToX(pt.Fx);
+            const y = Math.max(padT, kToY(pt.K));
+            if (idx === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+        });
+      }
+
+      // Required Gain Target Line
+      if (a.K_required <= maxK) {
+        const yReq = kToY(a.K_required);
+        ctx.save();
+        ctx.setLineDash([6, 4]);
+        ctx.strokeStyle = '#be123c';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(padL, yReq);
+        ctx.lineTo(padL + plotW, yReq);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Active Tank Gain Curve K(Q, m, Fx)
+      ctx.strokeStyle = '#1d4ed8';
+      ctx.lineWidth = 3.0;
+      ctx.beginPath();
+      a.sweepPoints.forEach((pt, idx) => {
+        const x = fxToX(pt.Fx);
+        const y = Math.max(padT, kToY(pt.K));
+        if (idx === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // Peak Triangle Marker
+      const yPeak = Math.max(padT, kToY(a.K_peak));
+      ctx.fillStyle = '#d97706';
+      ctx.beginPath();
+      ctx.moveTo(xPeak, yPeak - 7);
+      ctx.lineTo(xPeak - 6, yPeak + 5);
+      ctx.lineTo(xPeak + 6, yPeak + 5);
+      ctx.closePath();
+      ctx.fill();
+
+      // Draggable Operating Point Circle
+      const clampedFx = Math.min(2.0, Math.max(0.1, a.Fx));
+      const xOp = fxToX(clampedFx);
+      const yOp = Math.max(padT, kToY(a.K));
+
+      ctx.fillStyle = a.region === 'CAPACITIVE_HAZARD' ? '#dc2626' : '#16a34a';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(xOp, yOp, 10, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+
+      // Axis Titles & Legend
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '700 13px "Inter", sans-serif';
+      ctx.fillText('Normalized Switching Frequency (Fx = fs / fr)', padL + plotW / 2 - 140, H - 8);
+
+      ctx.save();
+      ctx.translate(18, padT + plotH / 2 + 80);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText('Resonant Tank Gain K(Q, m, Fx)', 0, 0);
+      ctx.restore();
+
+      // Top Legend
+      ctx.font = '600 12px "Inter", sans-serif';
+      ctx.fillStyle = '#1e293b';
+      const legText = `● Operating Point (Fx=${a.Fx.toFixed(3)}, K=${a.K.toFixed(3)})    ▲ Peak (Fx,min=${a.Fx_peak.toFixed(3)}, Kmax=${a.K_peak.toFixed(2)})    — Required Gain (${a.K_required.toFixed(2)})`;
+      ctx.fillText(legText, Math.max(padL, W - padR - ctx.measureText(legText).width), 22);
+    }
+
+    // --- Draw Oscilloscope Canvas ---
+    function drawScope(s, a, wf) {
+      const canvas = document.getElementById('scopeCanvas');
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      const W = rect.width;
+      const H = rect.height;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      const padL = 92, padR = 24, padT = 14, padB = 30;
+      const plotW = W - padL - padR;
+      const plotH = H - padT - padB;
+
+      const b0Top = padT, b0H = plotH * 0.24, b0Mid = b0Top + b0H / 2;
+      const b1Top = b0Top + b0H + 8, b1H = plotH * 0.42, b1Mid = b1Top + b1H / 2;
+      const b2Top = b1Top + b1H + 8, b2H = plotH - b0H - b1H - 16, b2Base = b2Top + b2H - 4;
+
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 10; i++) {
+        const x = padL + (i / 10) * plotW;
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + plotH);
+        ctx.stroke();
+      }
+
+      if (a.region === 'BELOW_RESONANCE' && wf.freewheelingRatio > 0.01) {
+        const fw = wf.freewheelingRatio;
+        const hcW = plotW / 4;
+        ctx.fillStyle = 'rgba(254, 243, 199, 0.7)';
+        for (let hc = 0; hc < 4; hc++) {
+          const hcStart = padL + hc * hcW;
+          ctx.fillRect(hcStart + (1 - fw) * hcW, padT, fw * hcW, plotH);
+        }
+      }
+
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = '#94a3b8';
+      [b0Mid, b1Mid, b2Base].forEach(y0 => {
+        ctx.beginPath();
+        ctx.moveTo(padL, y0);
+        ctx.lineTo(padL + plotW, y0);
+        ctx.stroke();
+      });
+      ctx.setLineDash([]);
+
+      ctx.strokeStyle = '#cbd5e1';
+      [b1Top - 4, b2Top - 4].forEach(ySep => {
+        ctx.beginPath();
+        ctx.moveTo(0, ySep);
+        ctx.lineTo(W, ySep);
+        ctx.stroke();
+      });
+
+      const N = wf.t_us.length;
+      const getX = idx => padL + (idx / (N - 1)) * plotW;
+
+      // CH1: Vsw
+      const vMax = Math.max(s.Vin * 1.25, 1);
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const x = getX(i), y = b0Mid - (wf.Vsw[i] / vMax) * (b0H * 0.42);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // CH2: ILm & ILr
+      const iPriMax = Math.max(wf.ILr_pk, wf.ILm_pk, 1) * 1.18;
+      ctx.save();
+      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 2.0;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const x = getX(i), y = b1Mid - (wf.ILm[i] / iPriMax) * (b1H * 0.45);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.strokeStyle = a.region === 'CAPACITIVE_HAZARD' ? '#dc2626' : '#059669';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const x = getX(i), y = b1Mid - (wf.ILr[i] / iPriMax) * (b1H * 0.45);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // CH3: ID1,D4 & ID2,D3
+      const iSecMax = Math.max(wf.ID_pk, 0.1) * 1.18;
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const x = getX(i), y = b2Base - (wf.ID1D4[i] / iSecMax) * (b2H * 0.82);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      ctx.strokeStyle = '#7c3aed';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const x = getX(i), y = b2Base - (wf.ID2D3[i] / iSecMax) * (b2H * 0.82);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Left Channel Labels
+      ctx.font = '700 13px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#b45309';
+      ctx.fillText('Vsw', 12, b0Mid - 4);
+      ctx.font = '600 12px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#475569';
+      ctx.fillText(`±${s.Vin.toFixed(0)} V`, 12, b0Mid + 14);
+
+      ctx.font = '700 13px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#059669';
+      ctx.fillText('ILr', 12, b1Mid - 10);
+      ctx.fillStyle = '#2563eb';
+      ctx.fillText('ILm', 46, b1Mid - 10);
+      ctx.font = '600 12px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#475569';
+      ctx.fillText(`±${wf.ILr_pk.toFixed(1)} A`, 12, b1Mid + 10);
+
+      ctx.font = '700 12px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#0284c7';
+      ctx.fillText('ID1,D4', 12, b2Top + 16);
+      ctx.fillStyle = '#7c3aed';
+      ctx.fillText('ID2,D3', 12, b2Top + 32);
+      ctx.font = '600 12px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#475569';
+      ctx.fillText(`pk:${wf.ID_pk.toFixed(2)}A`, 12, b2Top + 48);
+
+      // Time ticks
+      const totalUs = wf.t_us[N - 1] || 1;
+      ctx.fillStyle = '#1e293b';
+      ctx.font = '600 12px "JetBrains Mono", monospace';
+      for (let i = 0; i <= 5; i++) {
+        const x = padL + (i / 5) * plotW;
+        const tVal = ((i / 5) * totalUs).toFixed(2);
+        ctx.fillText(`${tVal} µs`, x - 20, H - 8);
+      }
+    }
+
+    // --- Helper HTML Builders for Real Stacked Mathematical Notation (Seamless SVG Radical) ---
+    const frac = (num, den) => `<span class="math-frac"><span class="num">${num}</span><span class="den">${den}</span></span>`;
+    const sqrt = (rad) => `<span class="math-sqrt"><span class="math-sqrt-stem"><svg viewBox="0 0 16 100" preserveAspectRatio="none"><polyline points="1,58 4.5,50 9.5,96 15.5,0.9 16,0.9" fill="none" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></span><span class="radicand">${rad}</span></span>`;
+
+    function getFormulaCatalog(s, a) {
+      return {
+        fr: {
+          sym: 'fr',
+          title: 'Resonant Frequency',
+          ref: 'Infineon AN 2012-09 — Section 2.1 (Page 5) & Eq. 5 (Page 11)',
+          eqHTML: `<div class="math-expr"><span class="math-var">f<sub>r</sub></span> <span class="math-op">=</span> ${frac('1', `2&pi; &middot; ${sqrt('<span class="math-var">L<sub>r</sub></span> &middot; <span class="math-var">C<sub>r</sub></span>')}`)}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">f<sub>r</sub></span> <span class="math-op">=</span> ${frac('1', `2&pi; &middot; ${sqrt(`<span class="math-num">${s.Lr_uH} &mu;H</span> &times; <span class="math-num">${s.Cr_nF} nF</span>`)}`)}</div>`,
+          res: `${a.fr_kHz.toFixed(2)} kHz`
+        },
+        m: {
+          sym: 'm',
+          title: 'Ratio of Total Primary Inductance to Resonant Inductance',
+          ref: 'Infineon AN 2012-09 — Section 2.1 (Page 5) & Eq. 6 (Page 11)',
+          eqHTML: `<div class="math-expr"><span class="math-var">m</span> <span class="math-op">=</span> ${frac('<span class="math-var">L<sub>r</sub></span> + <span class="math-var">L<sub>m</sub></span>', '<span class="math-var">L<sub>r</sub></span>')}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">m</span> <span class="math-op">=</span> ${frac(`<span class="math-num">${s.Lr_uH} &mu;H</span> + <span class="math-num">${s.Lm_uH} &mu;H</span>`, `<span class="math-num">${s.Lr_uH} &mu;H</span>`)}</div>`,
+          res: `${a.m.toFixed(3)}`
+        },
+        Q: {
+          sym: 'Q',
+          title: 'Quality Factor',
+          ref: 'Infineon AN 2012-09 — Section 2.1 (Page 5) & Eq. 5 (Page 11)',
+          eqHTML: `<div class="math-expr"><span class="math-var">Q</span> <span class="math-op">=</span> ${frac(sqrt(frac('<span class="math-var">L<sub>r</sub></span>', '<span class="math-var">C<sub>r</sub></span>')), '<span class="math-var">R<sub>ac</sub></span>')}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">Q</span> <span class="math-op">=</span> ${frac(sqrt(frac(`<span class="math-num">${s.Lr_uH} &mu;H</span>`, `<span class="math-num">${s.Cr_nF} nF</span>`)), `<span class="math-num">${a.Rac.toFixed(3)} &Omega;</span>`)}</div>`,
+          res: `${a.Q.toFixed(4)}`
+        },
+        Lr: {
+          sym: 'Lr',
+          title: 'Resonant Inductance',
+          ref: 'Infineon AN 2012-09 — Step 5, Eq. 5 (Page 11 & Page 14)',
+          eqHTML: `<div class="math-expr"><span class="math-var">L<sub>r</sub></span> <span class="math-op">=</span> ${frac('<span class="math-var">Q</span> &middot; <span class="math-var">R<sub>ac</sub></span>', '2&pi; &middot; <span class="math-var">f<sub>r</sub></span>')}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">L<sub>r</sub></span> <span class="math-op">=</span> ${frac(`<span class="math-num">${a.Q.toFixed(4)}</span> &times; <span class="math-num">${a.Rac.toFixed(3)} &Omega;</span>`, `2&pi; &times; <span class="math-num">${a.fr_kHz.toFixed(2)} kHz</span>`)}</div>`,
+          res: `${s.Lr_uH.toFixed(3)} µH`
+        },
+        Cr: {
+          sym: 'Cr',
+          title: 'Resonant Capacitance',
+          ref: 'Infineon AN 2012-09 — Step 5, Eq. 5 (Page 11 & Page 14)',
+          eqHTML: `<div class="math-expr"><span class="math-var">C<sub>r</sub></span> <span class="math-op">=</span> ${frac('1', '2&pi; &middot; <span class="math-var">f<sub>r</sub></span> &middot; <span class="math-var">Q</span> &middot; <span class="math-var">R<sub>ac</sub></span>')}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">C<sub>r</sub></span> <span class="math-op">=</span> ${frac('1', `2&pi; &times; <span class="math-num">${a.fr_kHz.toFixed(2)} kHz</span> &times; <span class="math-num">${a.Q.toFixed(4)}</span> &times; <span class="math-num">${a.Rac.toFixed(3)} &Omega;</span>`)}</div>`,
+          res: `${s.Cr_nF.toFixed(2)} nF`
+        },
+        Lm: {
+          sym: 'Lm',
+          title: 'Magnetizing Inductance',
+          ref: 'Infineon AN 2012-09 — Step 5, Eq. 6 (Page 11 & Page 14)',
+          eqHTML: `<div class="math-expr"><span class="math-var">L<sub>m</sub></span> <span class="math-op">=</span> (<span class="math-var">m</span> &minus; 1) &middot; <span class="math-var">L<sub>r</sub></span></div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">L<sub>m</sub></span> <span class="math-op">=</span> (<span class="math-num">${a.m.toFixed(3)}</span> &minus; 1) &times; <span class="math-num">${s.Lr_uH.toFixed(3)} &mu;H</span></div>`,
+          res: `${s.Lm_uH.toFixed(3)} µH`
+        },
+        Fx: {
+          sym: 'Fx & fs',
+          title: 'Normalized Switching Frequency',
+          ref: 'Infineon AN 2012-09 — Section 2.1 (Page 5)',
+          eqHTML: `<div class="math-expr"><span class="math-var">F<sub>x</sub></span> <span class="math-op">=</span> ${frac('<span class="math-var">f<sub>s</sub></span>', '<span class="math-var">f<sub>r</sub></span>')}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">F<sub>x</sub></span> <span class="math-op">=</span> ${frac(`<span class="math-num">${s.fs_kHz.toFixed(2)} kHz</span>`, `<span class="math-num">${a.fr_kHz.toFixed(2)} kHz</span>`)}</div>`,
+          res: `Fx = ${a.Fx.toFixed(4)} (fs = ${s.fs_kHz.toFixed(2)} kHz)`
+        },
+        Rac: {
+          sym: 'Rac',
+          title: 'Reflected Load Resistance (Full-Bridge Rectifier)',
+          ref: 'Infineon AN 2012-09 — Eq. 4 (Page 11)',
+          eqHTML: `<div class="math-expr"><span class="math-var">R<sub>ac</sub></span> <span class="math-op">=</span> ${frac('8', '&pi;<sup>2</sup>')} &middot; ${frac('<span class="math-var">N<sub>p</sub></span><sup>2</sup>', '<span class="math-var">N<sub>s</sub></span><sup>2</sup>')} &middot; ${frac('<span class="math-var">V<sub>o</sub></span><sup>2</sup>', '<span class="math-var">P<sub>o</sub></span>')}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">R<sub>ac</sub></span> <span class="math-op">=</span> ${frac('8', '&pi;<sup>2</sup>')} &times; (<span class="math-num">${s.npNs}</span>)<sup>2</sup> &times; ${frac(`<span class="math-num">${s.Vo}</span><sup>2</sup>`, `<span class="math-num">${s.Po}</span>`)}</div>`,
+          res: `${a.Rac.toFixed(3)} Ω`
+        },
+        K: {
+          sym: 'K(Q,m,Fx)',
+          title: 'Resonant Tank Voltage Gain (FHA)',
+          ref: 'Infineon AN 2012-09 — Equation 1 (Page 4)',
+          eqHTML: `<div class="math-expr"><span class="math-var">K</span>(<span class="math-var">Q, m, F<sub>x</sub></span>) <span class="math-op">=</span> ${frac('<span class="math-var">F<sub>x</sub></span><sup>2</sup> &middot; (<span class="math-var">m</span> &minus; 1)', sqrt('(<span class="math-var">m</span> &middot; <span class="math-var">F<sub>x</sub></span><sup>2</sup> &minus; 1)<sup>2</sup> + <span class="math-var">F<sub>x</sub></span><sup>2</sup> &middot; (<span class="math-var">F<sub>x</sub></span><sup>2</sup> &minus; 1)<sup>2</sup> &middot; (<span class="math-var">m</span> &minus; 1)<sup>2</sup> &middot; <span class="math-var">Q</span><sup>2</sup>'))}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">K</span> <span class="math-op">=</span> ${frac(`<span class="math-num">${a.Fx.toFixed(3)}</span><sup>2</sup> &times; (<span class="math-num">${a.m.toFixed(2)}</span> &minus; 1)`, sqrt(`(<span class="math-num">${a.m.toFixed(2)}</span> &times; <span class="math-num">${a.Fx.toFixed(3)}</span><sup>2</sup> &minus; 1)<sup>2</sup> + <span class="math-num">${a.Fx.toFixed(3)}</span><sup>2</sup> &times; (<span class="math-num">${a.Fx.toFixed(3)}</span><sup>2</sup> &minus; 1)<sup>2</sup> &times; (<span class="math-num">${a.m.toFixed(2)}</span> &minus; 1)<sup>2</sup> &times; <span class="math-num">${a.Q.toFixed(3)}</span><sup>2</sup>`))}</div>`,
+          res: `${a.K.toFixed(4)}`
+        },
+        Fx_peak: {
+          sym: 'Fx,min',
+          title: 'Minimum Normalized Frequency (ZVS Boundary Peak)',
+          ref: 'Infineon AN 2012-09 — Equation 2 (Page 10)',
+          eqHTML: `<div class="math-expr">${frac('d', 'd<span class="math-var">F<sub>x</sub></span>')} <span class="math-var">K</span>(<span class="math-var">Q, m, F<sub>x,min</sub></span>) <span class="math-op">=</span> 0</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">K<sub>max</sub></span> <span class="math-op">=</span> <span class="math-var">K</span>(<span class="math-num">Q = ${a.Q.toFixed(3)}</span>, <span class="math-num">m = ${a.m.toFixed(2)}</span>, <span class="math-num">F<sub>x,min</sub> = ${a.Fx_peak.toFixed(3)}</span>)</div>`,
+          res: `Fx,min = ${a.Fx_peak.toFixed(3)} (fs,min = ${a.fs_peak_kHz.toFixed(2)} kHz, Kmax = ${a.K_peak.toFixed(3)})`
+        },
+        Vo_predicted: {
+          sym: 'Vo,FHA',
+          title: 'Output DC Voltage (FHA Model)',
+          ref: 'Infineon AN 2012-09 — Section 2.1 (Page 4)',
+          eqHTML: `<div class="math-expr"><span class="math-var">V<sub>o,FHA</sub></span> <span class="math-op">=</span> <span class="math-var">V<sub>in</sub></span> &middot; <span class="math-var">K</span>(<span class="math-var">Q, m, F<sub>x</sub></span>) &middot; ${frac('<span class="math-var">N<sub>s</sub></span>', '<span class="math-var">N<sub>p</sub></span>')}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">V<sub>o,FHA</sub></span> <span class="math-op">=</span> <span class="math-num">${s.Vin} V</span> &times; <span class="math-num">${a.K.toFixed(4)}</span> &times; ${frac('1', `<span class="math-num">${s.npNs}</span>`)}</div>`,
+          res: `${a.Vo_predicted.toFixed(2)} V (Target Vo = ${s.Vo.toFixed(1)} V)`
+        },
+        Io: {
+          sym: 'Io,FHA',
+          title: 'Output DC Load Current & Load Resistance',
+          ref: 'Infineon AN 2012-09 — Section 2.1 (Page 5) & Eq. 4 (Page 11)',
+          eqHTML: `<div class="math-expr"><span class="math-var">I<sub>o,target</sub></span> <span class="math-op">=</span> ${frac('<span class="math-var">P<sub>o</sub></span>', '<span class="math-var">V<sub>o</sub></span>')} , &nbsp;&nbsp; <span class="math-var">R<sub>o</sub></span> <span class="math-op">=</span> ${frac('<span class="math-var">V<sub>o</sub></span><sup>2</sup>', '<span class="math-var">P<sub>o</sub></span>')} , &nbsp;&nbsp; <span class="math-var">I<sub>o,FHA</sub></span> <span class="math-op">=</span> ${frac('<span class="math-var">V<sub>o,FHA</sub></span>', '<span class="math-var">R<sub>o</sub></span>')}</div>`,
+          subHTML: `<div class="math-expr"><span class="math-var">I<sub>o,target</sub></span> <span class="math-op">=</span> ${frac(`<span class="math-num">${s.Po} W</span>`, `<span class="math-num">${s.Vo} V</span>`)} <span class="math-op">=</span> <span class="math-num">${a.Io_target.toFixed(2)} A</span> , &nbsp;&nbsp; <span class="math-var">I<sub>o,FHA</sub></span> <span class="math-op">=</span> ${frac(`<span class="math-num">${a.Vo_predicted.toFixed(1)} V</span>`, `<span class="math-num">${a.Ro.toFixed(2)} &Omega;</span>`)}</div>`,
+          res: `Io,FHA = ${a.Io_predicted.toFixed(2)} A (Target Io = ${a.Io_target.toFixed(2)} A, Ro = ${a.Ro.toFixed(2)} Ω)`
+        }
+      };
+    }
+
+    function openFormulaModal(key) {
+      activeFormulaKey = key;
+      const a = analyzeSystem(state);
+      const catalog = getFormulaCatalog(state, a);
+      const item = catalog[key] || catalog.K;
+
+      document.getElementById('modRef').textContent = item.ref;
+      document.getElementById('modTitle').textContent = item.title;
+      document.getElementById('modEq').innerHTML = item.eqHTML;
+      document.getElementById('modSub').innerHTML = item.subHTML;
+      document.getElementById('modRes').textContent = item.res;
+
+      const tabsEl = document.getElementById('modalTabs');
+      tabsEl.innerHTML = '';
+      Object.keys(catalog).forEach(k => {
+        const b = document.createElement('button');
+        b.className = 'tab-btn' + (k === key ? ' active' : '');
+        b.textContent = catalog[k].sym;
+        b.onclick = () => openFormulaModal(k);
+        tabsEl.appendChild(b);
+      });
+
+      document.getElementById('formulaModal').classList.add('open');
+    }
+
+    // --- Main Render Loop ---
+    function renderAll(skipField) {
+      const a = analyzeSystem(state);
+      const wf = generateWaveforms(state, a);
+
+      const setInputVal = (id, fieldName, val) => {
+        const el = document.getElementById(id);
+        if (el && document.activeElement !== el && skipField !== fieldName) {
+          el.value = val;
+        }
+      };
+
+      setInputVal('inp_Lr', 'Lr_uH', Number(state.Lr_uH.toFixed(3)));
+      setInputVal('inp_Cr', 'Cr_nF', Number(state.Cr_nF.toFixed(2)));
+      setInputVal('inp_Lm', 'Lm_uH', Number(state.Lm_uH.toFixed(3)));
+      setInputVal('inp_fr', 'fr_kHz', Number(a.fr_kHz.toFixed(2)));
+      setInputVal('inp_m', 'm', Number(a.m.toFixed(3)));
+      setInputVal('inp_Q', 'Q', Number(a.Q.toFixed(4)));
+      setInputVal('inp_fs', 'fs_kHz', Number(state.fs_kHz.toFixed(2)));
+      setInputVal('inp_Fx', 'Fx', Number(a.Fx.toFixed(3)));
+      setInputVal('inp_npNs', 'npNs', state.npNs);
+      setInputVal('inp_Vin', 'Vin', state.Vin);
+      setInputVal('inp_Vo', 'Vo', state.Vo);
+      setInputVal('inp_Io', 'Io', Number(a.Io_target.toFixed(2)));
+      setInputVal('inp_Po', 'Po', Number(state.Po.toFixed(1)));
+
+      document.getElementById('turnsRatioText').textContent = `1 : ${(1 / Math.max(state.npNs, 0.0001)).toFixed(1)}`;
+      document.getElementById('hdrFs').textContent = `${state.fs_kHz.toFixed(2)} kHz`;
+      document.getElementById('hdrFx').textContent = a.Fx.toFixed(3);
+      document.getElementById('hdrK').textContent = a.K.toFixed(3);
+      document.getElementById('hdrVo').textContent = `${a.Vo_predicted.toFixed(1)} V`;
+      document.getElementById('hdrIo').textContent = `${a.Io_predicted.toFixed(2)} A`;
+
+      document.getElementById('card_Vo').textContent = a.Vo_predicted.toFixed(1);
+      document.getElementById('card_Vo_target').textContent = `Target Vo: ${state.Vo.toFixed(1)} V`;
+      document.getElementById('card_Io').textContent = a.Io_predicted.toFixed(2);
+      document.getElementById('card_Io_target').textContent = `Target Io: ${a.Io_target.toFixed(2)} A`;
+      document.getElementById('card_K').textContent = a.K.toFixed(4);
+      document.getElementById('card_K_req').textContent = `Req Gain: ${a.K_required.toFixed(3)}`;
+      document.getElementById('card_Rac').textContent = a.Rac.toFixed(3);
+      document.getElementById('card_Ro').textContent = a.Ro.toFixed(2);
+      document.getElementById('card_FxPeak').textContent = a.Fx_peak.toFixed(3);
+      document.getElementById('card_fsPeak').textContent = `(${a.fs_peak_kHz.toFixed(1)}k)`;
+      document.getElementById('card_K_peak').textContent = `Peak Kmax: ${a.K_peak.toFixed(3)}`;
+
+      document.getElementById('dragHint').textContent = `Click or drag operating point on curve to tune fs (${state.fs_kHz.toFixed(2)} kHz)`;
+
+      // Mode Badge
+      const badge = document.getElementById('modeBadge');
+      const dot = document.getElementById('modeDot');
+      const text = document.getElementById('modeText');
+      if (a.region === 'CAPACITIVE_HAZARD') {
+        badge.style.background = '#fef2f2';
+        badge.style.borderColor = '#fca5a5';
+        badge.style.color = '#991b1b';
+        dot.style.background = '#dc2626';
+        text.textContent = 'CAPACITIVE REGION (ZCS — HARD COMMUTATION HAZARD)';
+      } else if (a.region === 'BELOW_RESONANCE') {
+        badge.style.background = '#ecfdf5';
+        badge.style.borderColor = '#6ee7b7';
+        badge.style.color = '#065f46';
+        dot.style.background = '#059669';
+        text.textContent = 'INDUCTIVE — BELOW RESONANCE (ZVS + SECONDARY ZCS)';
+      } else if (a.region === 'AT_RESONANCE') {
+        badge.style.background = '#eff6ff';
+        badge.style.borderColor = '#93c5fd';
+        badge.style.color = '#1e40af';
+        dot.style.background = '#2563eb';
+        text.textContent = 'INDUCTIVE — AT RESONANCE (OPTIMAL UNITY GAIN K = 1.0)';
+      } else {
+        badge.style.background = '#f1f5f9';
+        badge.style.borderColor = '#cbd5e1';
+        badge.style.color = '#1e293b';
+        dot.style.background = '#475569';
+        text.textContent = 'INDUCTIVE — ABOVE RESONANCE (ZVS BUCK MODE)';
+      }
+
+      // Scope Telemetry
+      document.getElementById('stat_Vsw').textContent = `±${state.Vin} V`;
+      document.getElementById('stat_VoIo').textContent = `${a.Vo_predicted.toFixed(1)} V / ${a.Io_predicted.toFixed(2)} A`;
+      document.getElementById('stat_ILr').textContent = `${wf.ILr_pk.toFixed(1)} A / ${wf.ILr_rms.toFixed(1)} A`;
+      document.getElementById('stat_ILm').textContent = `${wf.ILm_pk.toFixed(2)} A`;
+      document.getElementById('stat_fw').textContent = `${(wf.freewheelingRatio * 100).toFixed(1)}%`;
+
+      drawGainChart(a);
+      drawScope(state, a, wf);
+    }
+
+    // --- Event Listeners Setup ---
+    window.addEventListener('DOMContentLoaded', () => {
+      const inputMap = {
+        inp_Lr: 'Lr_uH',
+        inp_Cr: 'Cr_nF',
+        inp_Lm: 'Lm_uH',
+        inp_fr: 'fr_kHz',
+        inp_m: 'm',
+        inp_Q: 'Q',
+        inp_fs: 'fs_kHz',
+        inp_Fx: 'Fx',
+        inp_npNs: 'npNs',
+        inp_Vin: 'Vin',
+        inp_Vo: 'Vo',
+        inp_Io: 'Io',
+        inp_Po: 'Po'
+      };
+
+      Object.keys(inputMap).forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', e => handleParamEdit(inputMap[id], e.target.value));
+        el.addEventListener('change', e => {
+          handleParamEdit(inputMap[id], e.target.value);
+          renderAll();
+        });
+      });
+
+      document.getElementById('btnLockPeak').onclick = () => {
+        const a = analyzeSystem(state);
+        state.fs_kHz = Number(a.fs_peak_kHz.toFixed(2));
+        renderAll();
+      };
+
+      document.getElementById('btnLockFr').onclick = () => {
+        const a = analyzeSystem(state);
+        state.fs_kHz = Number(a.fr_kHz.toFixed(2));
+        renderAll();
+      };
+
+      document.getElementById('btnToggleRef').onclick = e => {
+        showRefCurves = !showRefCurves;
+        e.target.textContent = showRefCurves ? 'Hide Ref Q-Curves' : 'Show Ref Q-Curves';
+        renderAll();
+      };
+
+      // Interactive Dragging on Gain Canvas
+      const gainCanvas = document.getElementById('gainCanvas');
+      const updateFxFromPointer = clientX => {
+        const rect = gainCanvas.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const { left, right, minFx, maxFx } = gainChartGeometry;
+        const ratio = (x - left) / Math.max(right - left, 1);
+        const fx = Math.min(maxFx, Math.max(0.15, minFx + ratio * (maxFx - minFx)));
+        const a = analyzeSystem(state);
+        state.fs_kHz = Number((fx * a.fr_kHz).toFixed(2));
+        renderAll();
+      };
+
+      gainCanvas.addEventListener('pointerdown', e => {
+        gainCanvas.setPointerCapture(e.pointerId);
+        isDraggingGain = true;
+        gainCanvas.style.cursor = 'grabbing';
+        updateFxFromPointer(e.clientX);
+      });
+
+      gainCanvas.addEventListener('pointermove', e => {
+        if (!isDraggingGain) return;
+        updateFxFromPointer(e.clientX);
+      });
+
+      gainCanvas.addEventListener('pointerup', e => {
+        if (isDraggingGain) {
+          gainCanvas.releasePointerCapture(e.pointerId);
+          isDraggingGain = false;
+          gainCanvas.style.cursor = 'pointer';
+        }
+      });
+
+      // Formula Buttons & Cards
+      document.querySelectorAll('[data-formula]').forEach(el => {
+        el.addEventListener('click', () => openFormulaModal(el.getAttribute('data-formula')));
+      });
+
+      document.getElementById('btnAllFormulas').onclick = () => openFormulaModal('K');
+      document.getElementById('btnCloseModal').onclick = () => {
+        document.getElementById('formulaModal').classList.remove('open');
+      };
+      document.getElementById('formulaModal').addEventListener('click', e => {
+        if (e.target.id === 'formulaModal') {
+          document.getElementById('formulaModal').classList.remove('open');
+        }
+      });
+
+      window.addEventListener('resize', () => renderAll());
+      renderAll();
+    });
+  </script>
+</body>
+</html>
