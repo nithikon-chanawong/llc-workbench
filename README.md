@@ -22,36 +22,39 @@ The calculator uses FHA-based equations for LLC resonant converter analysis, inc
 
 **Resonant Frequency**
 
-\[
+$$
 f_r = \frac{1}{2\pi\sqrt{L_r C_r}}
-\]
+$$
 
 **Normalized Switching Frequency**
 
-\[
+$$
 F_x = \frac{f_s}{f_r}
-\]
+$$
 
 **Inductance Ratio**
 
-\[
+$$
 m = \frac{L_r + L_m}{L_r}
-\]
+$$
 
 **Quality Factor**
 
-\[
+$$
 Q = \frac{\sqrt{L_r/C_r}}{R_{ac}}
-\]
+$$
 
 **Voltage Gain**
 
-\[
-K(Q,m,F_x)=
+$$
+M(F_x)=
 \frac{F_x^2(m-1)}
-{\sqrt{(mF_x^2-1)^2+
-F_x^2(F_x^2-1)^2(m-1)^2Q^2}}
-\]
+{\sqrt{
+(mF_x^2-1)^2+
+F_x^2(F_x^2-1)^2(m-1)^2Q^2
+}}
+$$
+
 
 ## Reference
 
