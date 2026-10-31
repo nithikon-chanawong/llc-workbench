@@ -1,4 +1,4 @@
-<!doctype html>
+#7c3aed<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -6,26 +6,22 @@
   <title>LLC Full-Bridge Resonant Converter Workbench — Infineon AN 2012-09</title>
   <style>
     :root {
-      --bg-page: #f1f5f9;
+      --bg-page: #e2e8f0;
       --bg-panel: #ffffff;
-      --bg-subtle: #f8fafc;
+      --bg-header: #f8fafc;
+      --bg-subtle: #f1f5f9;
       --border-color: #cbd5e1;
       --border-strong: #94a3b8;
       --text-main: #0f172a;
-      --text-secondary: #334155;
-      --text-muted: #64748b;
+      --text-secondary: #1e293b;
+      --text-muted: #475569;
       --blue-primary: #1d4ed8;
-      --blue-bg: #eff6ff;
-      --blue-border: #93c5fd;
+      --purple-primary: #7c3aed;   
+      --red-primary: #dc2626;
+      --teal-primary: #0d9488;
       --green-safe: #047857;
-      --green-bg: #ecfdf5;
-      --green-border: #6ee7b7;
       --red-hazard: #b91c1c;
-      --red-bg: #fef2f2;
-      --red-border: #fca5a5;
       --amber-warn: #b45309;
-      --amber-bg: #fffbeb;
-      --amber-border: #fcd34d;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
       --font-math: 'Cambria Math', 'Latin Modern Math', 'STIX Two Math', 'Times New Roman', serif;
@@ -50,16 +46,16 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Top Header Bar */
+    /* Top Instrument Header Bar */
     .header-bar {
-      height: 60px;
+      height: 54px;
       background: var(--bg-panel);
-      border-bottom: 1px solid var(--border-color);
-      padding: 0 20px;
+      border-bottom: 2px solid var(--border-strong);
+      padding: 0 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
       flex-shrink: 0;
     }
 
@@ -67,96 +63,85 @@
       display: flex;
       align-items: baseline;
       gap: 12px;
+      min-width: 0;
     }
 
     .header-title {
-      font-size: 18px;
+      font-size: 17.5px;
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: -0.01em;
+      white-space: nowrap;
     }
 
     .header-ref {
       font-size: 13px;
       font-family: var(--font-mono);
       color: var(--text-muted);
-      border-left: 1px solid var(--border-color);
-      padding-left: 12px;
+      border-left: 2px solid var(--border-color);
+      padding-left: 10px;
+      white-space: nowrap;
     }
 
-    .mode-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 7px 16px;
-      border-radius: 6px;
+    .mode-indicator {
+      padding: 5px 12px;
       font-family: var(--font-mono);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      border: 1px solid transparent;
-    }
-
-    .mode-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-subtle);
+      white-space: nowrap;
+      border-radius: 2px;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     .quick-summary {
       display: flex;
       align-items: center;
-      gap: 14px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-color);
-      padding: 6px 14px;
-      border-radius: 6px;
+      gap: 12px;
+      background: var(--bg-header);
+      border: 1px solid var(--border-strong);
+      padding: 5px 12px;
+      border-radius: 2px;
       font-family: var(--font-mono);
-      font-size: 14px;
+      font-size: 13.5px;
     }
 
     .btn {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
+      padding: 5px 12px;
+      border-radius: 2px;
+      border: 1px solid var(--border-strong);
       background: var(--bg-panel);
-      color: var(--text-secondary);
+      color: var(--text-main);
       cursor: pointer;
-      transition: background 0.12s, border-color 0.12s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
     }
 
     .btn:hover {
-      background: var(--bg-page);
-      border-color: var(--border-strong);
+      background: var(--bg-subtle);
+      border-color: var(--text-secondary);
     }
 
-    .btn-blue {
-      background: var(--blue-bg);
-      color: var(--blue-primary);
-      border-color: var(--blue-border);
+    .btn-primary-solid {
+      background: var(--blue-primary);
+      color: #ffffff;
+      border-color: #1e3a8a;
     }
 
-    .btn-blue:hover {
-      background: #dbeafe;
-    }
-
-    .btn-amber {
-      background: var(--amber-bg);
-      color: var(--amber-warn);
-      border-color: var(--amber-border);
-    }
-
-    .btn-amber:hover {
-      background: #fef3c7;
+    .btn-primary-solid:hover {
+      background: #1e40af;
     }
 
     /* Main Workspace Split */
@@ -169,9 +154,9 @@
 
     /* Left Parameter Sidebar */
     .sidebar {
-      width: 440px;
+      width: 465px;
       background: var(--bg-panel);
-      border-right: 1px solid var(--border-color);
+      border-right: 2px solid var(--border-strong);
       display: flex;
       flex-direction: column;
       height: 100%;
@@ -180,32 +165,102 @@
       user-select: none;
     }
 
+    /* Parameter Set Switcher Bar (Set A, Set B, Set C) */
+    .compare-bar {
+      padding: 8px 12px;
+      background: var(--bg-header);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .set-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+    }
+
+    .set-tab {
+      padding: 6px 8px;
+      border-radius: 2px;
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .set-tab:hover {
+      background: var(--bg-subtle);
+    }
+
+    .set-tab.active-a {
+      background: #eff6ff;
+      border: 2px solid var(--blue-primary);
+      color: var(--blue-primary);
+    }
+
+    .set-tab.active-b {
+      background: #f5f3ff;
+      border: 2px solid var(--red-primary);
+      color: var(--red-primary);
+    }
+
+    .set-tab.active-c {
+      background: #f0fdfa;
+      border: 2px solid var(--teal-primary);
+      color: var(--teal-primary);
+    }
+
+    .set-swatch {
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+    }
+
+    .compare-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
     .sidebar-section {
-      padding: 14px 18px;
-      border-bottom: 1px solid #e2e8f0;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
     }
 
     .section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #e2e8f0;
     }
 
     .section-title {
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-secondary);
+      letter-spacing: 0.03em;
+      color: var(--text-main);
     }
 
     .param-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding: 6px 0;
+      gap: 8px;
+      padding: 4px 0;
       border-bottom: 1px solid #f1f5f9;
     }
 
@@ -218,29 +273,26 @@
       align-items: baseline;
       gap: 8px;
       min-width: 0;
+      flex: 1;
     }
 
     .param-symbol {
       font-family: var(--font-mono);
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 700;
-      color: var(--text-main);
-      min-width: 52px;
-    }
-
-    .param-symbol.interactive {
       color: var(--blue-primary);
+      min-width: 48px;
+      flex-shrink: 0;
       cursor: pointer;
       text-decoration: underline;
       text-underline-offset: 3px;
     }
 
     .param-desc {
-      font-size: 14px;
+      font-size: 14.5px;
+      font-weight: 500;
       color: var(--text-secondary);
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .param-input-group {
@@ -252,43 +304,44 @@
 
     .formula-chip {
       font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: #eff6ff;
-      color: #1d4ed8;
-      border: 1px solid #bfdbfe;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-strong);
       cursor: pointer;
     }
 
     .formula-chip:hover {
       background: #dbeafe;
+      color: var(--blue-primary);
+      border-color: var(--blue-primary);
     }
 
     .num-input {
-      width: 106px;
-      padding: 4px 8px;
+      width: 96px;
+      padding: 3px 8px;
       font-family: var(--font-mono);
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       text-align: right;
       color: var(--text-main);
       background: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: 5px;
+      border: 1px solid var(--border-strong);
+      border-radius: 2px;
     }
 
     .num-input.coupled {
       background: #f8fafc;
-      border-color: #93c5fd;
-      color: #1e3a8a;
+      border-color: #64748b;
     }
 
     .num-input:focus {
       outline: none;
       border-color: var(--blue-primary);
-      box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+      box-shadow: inset 0 0 0 1px var(--blue-primary);
       background: #ffffff;
     }
 
@@ -296,50 +349,38 @@
       width: 38px;
       font-family: var(--font-mono);
       font-size: 13px;
+      font-weight: 600;
       color: var(--text-muted);
     }
 
-    /* Telemetry Readout Cards */
-    .telemetry-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-      margin-top: 6px;
-    }
-
-    .telemetry-card {
-      text-align: left;
-      padding: 10px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
+    /* Section 3 Tabular Readout Grid (Clean Industrial Table — No AI Slop Cards) */
+    .telemetry-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border-strong);
       background: #ffffff;
+    }
+
+    .telemetry-table td {
+      border: 1px solid var(--border-color);
+      padding: 7px 10px;
+      width: 50%;
+      vertical-align: top;
       cursor: pointer;
-      transition: border-color 0.12s, background 0.12s;
     }
 
-    .telemetry-card:hover {
-      border-color: var(--blue-primary);
-      background: var(--blue-bg);
-    }
-
-    .telemetry-card.highlight {
-      background: #eff6ff;
-      border-color: #93c5fd;
-    }
-
-    .telemetry-card.highlight-green {
-      background: #ecfdf5;
-      border-color: #6ee7b7;
+    .telemetry-table td:hover {
+      background: #f8fafc;
     }
 
     .telemetry-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 12px;
-      color: var(--text-secondary);
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 700;
       margin-bottom: 3px;
-      font-weight: 600;
     }
 
     .telemetry-sym {
@@ -351,71 +392,113 @@
 
     .telemetry-val {
       font-family: var(--font-mono);
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--text-main);
     }
 
     .telemetry-sub {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
       margin-top: 2px;
     }
 
     .telemetry-unit {
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 13.5px;
+      font-weight: 600;
       color: var(--text-muted);
     }
 
-    /* Right Charts Container */
+    /* Right Charts Container — 70 / 30 Vertical Split */
     .charts-main {
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 12px;
-      gap: 12px;
+      padding: 10px;
+      gap: 10px;
       min-width: 0;
       min-height: 0;
     }
 
     .chart-panel {
-      flex: 1;
       min-height: 0;
       background: var(--bg-panel);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      border-radius: 2px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
+    .chart-panel.gain-panel {
+      flex: 7; /* 70% height */
+    }
+
+    .chart-panel.scope-panel {
+      flex: 3; /* 30% height */
+    }
+
     .panel-bar {
-      height: 44px;
-      padding: 0 16px;
-      background: #f8fafc;
+      min-height: 40px;
+      padding: 4px 14px;
+      background: var(--bg-header);
       border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
       flex-shrink: 0;
     }
 
     .panel-title {
-      font-size: 15px;
+      font-size: 15.5px;
       font-weight: 700;
       color: var(--text-main);
     }
 
-    .panel-hint {
+    /* Waveform Single-Set View Switcher */
+    .wf-view-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .wf-view-btn {
+      font-family: var(--font-sans);
       font-size: 13px;
-      font-weight: 600;
-      color: var(--blue-primary);
-      background: var(--blue-bg);
-      border: 1px solid var(--blue-border);
+      font-weight: 700;
       padding: 3px 10px;
-      border-radius: 4px;
+      border-radius: 2px;
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wf-view-btn:hover {
+      background: var(--bg-subtle);
+    }
+
+    .wf-view-btn.active-a {
+      background: #eff6ff;
+      color: var(--blue-primary);
+      border: 2px solid var(--blue-primary);
+    }
+
+    .wf-view-btn.active-b {
+      background: #f5f3ff;
+      color: var(--red-primary);
+      border: 2px solid var(--red-primary);
+    }
+
+    .wf-view-btn.active-c {
+      background: #f0fdfa;
+      color: var(--teal-primary);
+      border: 2px solid var(--teal-primary);
     }
 
     .canvas-wrap {
@@ -432,20 +515,22 @@
       display: block;
     }
 
-    .scope-stats {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    .scope-freewheel-box {
       font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      padding: 3px 10px;
+      border-radius: 2px;
     }
 
-    /* Modal Styling */
+    /* Modals */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.45);
+      background: rgba(15, 23, 42, 0.55);
       display: none;
       align-items: center;
       justify-content: center;
@@ -459,39 +544,47 @@
 
     .modal-box {
       background: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      max-width: 780px;
+      border: 2px solid var(--border-strong);
+      border-radius: 2px;
+      max-width: 820px;
       width: 100%;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
     }
 
+    .modal-box.report-modal-box {
+      max-width: 1060px;
+    }
+
     .modal-header {
-      padding: 16px 22px;
-      background: #f8fafc;
+      padding: 14px 20px;
+      background: var(--bg-header);
       border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-shrink: 0;
     }
 
     .modal-tabs {
-      padding: 10px 22px;
-      background: #f1f5f9;
+      padding: 10px 20px;
+      background: var(--bg-subtle);
       border-bottom: 1px solid var(--border-color);
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
     .tab-btn {
       font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 13.5px;
+      font-weight: 700;
       padding: 5px 12px;
-      border-radius: 5px;
-      border: 1px solid var(--border-color);
+      border-radius: 2px;
+      border: 1px solid var(--border-strong);
       background: #ffffff;
       color: var(--text-secondary);
       cursor: pointer;
@@ -504,27 +597,28 @@
     }
 
     .modal-body {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .formula-card {
-      background: #f8fafc;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 18px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
+      overflow-y: auto;
+    }
+
+    .formula-card {
+      background: var(--bg-header);
+      border: 1px solid var(--border-strong);
+      border-radius: 2px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
 
     .formula-display-box {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      padding: 18px 22px;
-      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      padding: 18px 20px;
+      border-radius: 2px;
       font-family: var(--font-math);
       font-size: 21px;
       color: var(--text-main);
@@ -590,7 +684,6 @@
       text-align: center;
     }
 
-    /* Seamless scalable SVG + CSS Square Root */
     .math-sqrt {
       display: inline-flex;
       align-items: stretch;
@@ -637,6 +730,61 @@
       font-family: var(--font-mono);
       font-weight: 600;
     }
+
+    /* Engineering Report Preview Styles */
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .report-table th,
+    .report-table td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 10px;
+      text-align: left;
+    }
+
+    .report-table th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .report-table td.mono {
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .report-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #1e293b;
+      border-bottom: 2px solid #cbd5e1;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+    }
+
+    .report-charts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .report-chart-box {
+      border: 1px solid #cbd5e1;
+      border-radius: 2px;
+      padding: 10px;
+      background: #ffffff;
+    }
+
+    .report-chart-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -647,23 +795,27 @@
       <span class="header-ref">Infineon AN 2012-09 (FHA Model)</span>
     </div>
 
-    <div id="modeBadge" class="mode-badge">
-      <span id="modeDot" class="mode-dot"></span>
+    <div id="modeBadge" class="mode-indicator">
       <span id="modeText">INDUCTIVE — AT RESONANCE</span>
     </div>
 
     <div class="header-right">
       <div class="quick-summary">
-        <div><span style="color:#64748b">fs:</span> <strong id="hdrFs">110.67 kHz</strong></div>
+        <div><strong id="hdrSetTag" style="color:#1d4ed8">[Set A]</strong></div>
+        <div><span style="color:#475569">fs:</span> <strong id="hdrFs">110.67 kHz</strong></div>
         <span style="color:#cbd5e1">|</span>
-        <div><span style="color:#64748b">Fx:</span> <strong id="hdrFx" style="color:#1d4ed8">1.000</strong></div>
+        <div><span style="color:#475569">Fx:</span> <strong id="hdrFx" style="color:#1d4ed8">1.000</strong></div>
         <span style="color:#cbd5e1">|</span>
-        <div><span style="color:#64748b">Gain K:</span> <strong id="hdrK">1.000</strong></div>
+        <div><span style="color:#475569">Gain K:</span> <strong id="hdrK">1.000</strong></div>
         <span style="color:#cbd5e1">|</span>
-        <div><span style="color:#64748b">Vo:</span> <strong id="hdrVo" style="color:#047857">400.0 V</strong></div>
+        <div><span style="color:#475569">Vo:</span> <strong id="hdrVo" style="color:#047857">400.0 V</strong></div>
         <span style="color:#cbd5e1">|</span>
-        <div><span style="color:#64748b">Io:</span> <strong id="hdrIo" style="color:#047857">0.63 A</strong></div>
+        <div><span style="color:#475569">Io:</span> <strong id="hdrIo" style="color:#047857">0.63 A</strong></div>
       </div>
+
+      <button id="btnExportReport" class="btn btn-primary-solid" title="Generate &amp; Export Engineering Analysis Report">
+        Export Report
+      </button>
     </div>
   </header>
 
@@ -671,16 +823,38 @@
   <div class="workspace">
     <!-- Left Sidebar -->
     <aside class="sidebar">
-      <!-- Section 1: Tank Components & Coupled Design Parameters (fr, m, Q, fs, Fx) -->
+      <!-- Parameter Set Switcher Bar (Up to 3 Sets: Set A, Set B, Set C) -->
+      <div class="compare-bar">
+        <div class="set-tabs">
+          <button id="tabSetA" class="set-tab active-a" title="Edit Parameter Set A">
+            <span class="set-swatch" style="background:#1d4ed8"></span>
+            <span>Set A</span>
+          </button>
+          <button id="tabSetB" class="set-tab" title="Enable or Edit Parameter Set B">
+            <span class="set-swatch" style="background:#dc2626"></span>
+            <span id="tabSetBText">+ Add Set B</span>
+          </button>
+          <button id="tabSetC" class="set-tab" title="Enable or Edit Parameter Set C">
+            <span class="set-swatch" style="background:#0d9488"></span>
+            <span id="tabSetCText">+ Add Set C</span>
+          </button>
+        </div>
+        <div id="compareSubBar" class="compare-actions" style="display:none">
+          <button id="btnCopyFromA" class="btn" style="padding:3px 9px;font-size:12px">Copy A &rarr; B</button>
+          <button id="btnRemoveActiveSet" class="btn" style="padding:3px 9px;font-size:12px;color:#b91c1c;border-color:#fca5a5">Remove Set</button>
+        </div>
+      </div>
+
+      <!-- Section 1: Tank Components & Coupled Design Parameters -->
       <div class="sidebar-section">
         <div class="section-header">
-          <span class="section-title">1. Resonant Tank &amp; Design Parameters</span>
-          <span id="turnsRatioText" style="font-family:var(--font-mono);font-size:13px;color:#475569;font-weight:600">1 : 12.0</span>
+          <span class="section-title">1. Resonant Tank &amp; Design</span>
+          <span id="turnsRatioText" style="font-family:var(--font-mono);font-size:13px;color:#1e293b;font-weight:700">1 : 12.0</span>
         </div>
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Lr">Lr</span>
+            <span class="param-symbol" data-formula="Lr">Lr</span>
             <span class="param-desc">Resonant Inductance</span>
           </div>
           <div class="param-input-group">
@@ -692,7 +866,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Cr">Cr</span>
+            <span class="param-symbol" data-formula="Cr">Cr</span>
             <span class="param-desc">Resonant Capacitance</span>
           </div>
           <div class="param-input-group">
@@ -704,7 +878,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Lm">Lm</span>
+            <span class="param-symbol" data-formula="Lm">Lm</span>
             <span class="param-desc">Magnetizing Inductance</span>
           </div>
           <div class="param-input-group">
@@ -716,7 +890,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="fr">fr</span>
+            <span class="param-symbol" data-formula="fr">fr</span>
             <span class="param-desc">Resonant Frequency</span>
           </div>
           <div class="param-input-group">
@@ -728,7 +902,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="m">m</span>
+            <span class="param-symbol" data-formula="m">m</span>
             <span class="param-desc">Inductance Ratio (Lr+Lm)/Lr</span>
           </div>
           <div class="param-input-group">
@@ -740,7 +914,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Q">Q</span>
+            <span class="param-symbol" data-formula="Q">Q</span>
             <span class="param-desc">Quality Factor</span>
           </div>
           <div class="param-input-group">
@@ -752,7 +926,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Fx">fs</span>
+            <span class="param-symbol" data-formula="Fx">fs</span>
             <span class="param-desc">Switching Frequency</span>
           </div>
           <div class="param-input-group">
@@ -764,7 +938,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Fx">Fx</span>
+            <span class="param-symbol" data-formula="Fx">Fx</span>
             <span class="param-desc">Normalized Freq (fs/fr)</span>
           </div>
           <div class="param-input-group">
@@ -775,7 +949,7 @@
         </div>
       </div>
 
-      <!-- Section 2: Transformer & Terminal Specifications (Includes Vo and Io) -->
+      <!-- Section 2: Transformer & Terminal Specifications -->
       <div class="sidebar-section">
         <div class="section-header">
           <span class="section-title">2. Transformer &amp; Terminal Specs</span>
@@ -783,7 +957,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Rac">Np/Ns</span>
+            <span class="param-symbol" data-formula="Rac">Np/Ns</span>
             <span class="param-desc">Primary / Secondary Ratio</span>
           </div>
           <div class="param-input-group">
@@ -795,7 +969,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Vo_predicted">Vin</span>
+            <span class="param-symbol" data-formula="Vo_predicted">Vin</span>
             <span class="param-desc">Input DC Voltage</span>
           </div>
           <div class="param-input-group">
@@ -807,7 +981,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Vo_predicted">Vo</span>
+            <span class="param-symbol" data-formula="Vo_predicted">Vo</span>
             <span class="param-desc">Target Output Voltage</span>
           </div>
           <div class="param-input-group">
@@ -819,7 +993,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Io">Io</span>
+            <span class="param-symbol" data-formula="Io">Io</span>
             <span class="param-desc">Target Output Current (Po/Vo)</span>
           </div>
           <div class="param-input-group">
@@ -831,7 +1005,7 @@
 
         <div class="param-row">
           <div class="param-label-group">
-            <span class="param-symbol interactive" data-formula="Rac">Po</span>
+            <span class="param-symbol" data-formula="Rac">Po</span>
             <span class="param-desc">Output Load Power</span>
           </div>
           <div class="param-input-group">
@@ -842,81 +1016,81 @@
         </div>
       </div>
 
-      <!-- Section 3: Calculated FHA Outputs (Click any card to view formula) -->
-      <div class="sidebar-section" style="background:var(--bg-subtle);flex:1">
+      <!-- Section 3: Calculated FHA Outputs (Clean Tabular Instrument Grid) -->
+      <div class="sidebar-section" style="background:var(--bg-header);flex:1">
         <div class="section-header">
           <span class="section-title">3. Calculated FHA Outputs</span>
-          <button class="btn btn-blue" style="padding:4px 10px;font-size:12px" id="btnAllFormulas">Equations</button>
+          <button class="btn" style="padding:2px 8px;font-size:12px" id="btnAllFormulas">Equations</button>
         </div>
 
-        <div class="telemetry-grid">
-          <button class="telemetry-card highlight-green" data-formula="Vo_predicted">
-            <div class="telemetry-top">
-              <span>Output Voltage</span>
-              <span class="telemetry-sym">Vo,FHA</span>
-            </div>
-            <div class="telemetry-val"><span id="card_Vo">400.0</span> <span class="telemetry-unit">V</span></div>
-            <div class="telemetry-sub" id="card_Vo_target">Target Vo: 400.0 V</div>
-          </button>
-
-          <button class="telemetry-card highlight-green" data-formula="Io">
-            <div class="telemetry-top">
-              <span>Output Current</span>
-              <span class="telemetry-sym">Io,FHA</span>
-            </div>
-            <div class="telemetry-val"><span id="card_Io">0.63</span> <span class="telemetry-unit">A</span></div>
-            <div class="telemetry-sub" id="card_Io_target">Target Io: 0.63 A</div>
-          </button>
-
-          <button class="telemetry-card highlight" data-formula="K">
-            <div class="telemetry-top">
-              <span>Tank Gain</span>
-              <span class="telemetry-sym">K(Q,m,Fx)</span>
-            </div>
-            <div class="telemetry-val" id="card_K">1.0000</div>
-            <div class="telemetry-sub" id="card_K_req">Req M: 1.010</div>
-          </button>
-
-          <button class="telemetry-card" data-formula="Fx_peak">
-            <div class="telemetry-top">
-              <span>ZVS Boundary</span>
-              <span class="telemetry-sym">Fx,min</span>
-            </div>
-            <div class="telemetry-val"><span id="card_FxPeak">0.503</span> <span class="telemetry-unit" id="card_fsPeak">(55.7k)</span></div>
-            <div class="telemetry-sub" id="card_K_peak">Kmax: 1.274</div>
-          </button>
-
-          <button class="telemetry-card" data-formula="Rac">
-            <div class="telemetry-top">
-              <span>Reflected Load</span>
-              <span class="telemetry-sym">Rac</span>
-            </div>
-            <div class="telemetry-val"><span id="card_Rac">3.600</span> <span class="telemetry-unit">Ω</span></div>
-          </button>
-
-          <button class="telemetry-card" data-formula="Io">
-            <div class="telemetry-top">
-              <span>DC Load Resistance</span>
-              <span class="telemetry-sym">Ro = Vo/Io</span>
-            </div>
-            <div class="telemetry-val"><span id="card_Ro">640.0</span> <span class="telemetry-unit">Ω</span></div>
-          </button>
-        </div>
+        <table class="telemetry-table">
+          <tbody>
+            <tr>
+              <td data-formula="Vo_predicted">
+                <div class="telemetry-top">
+                  <span>Output Voltage</span>
+                  <span class="telemetry-sym">Vo,FHA</span>
+                </div>
+                <div class="telemetry-val"><span id="card_Vo">400.0</span> <span class="telemetry-unit">V</span></div>
+                <div class="telemetry-sub" id="card_Vo_target">Target Vo: 400.0 V</div>
+              </td>
+              <td data-formula="Io">
+                <div class="telemetry-top">
+                  <span>Output Current</span>
+                  <span class="telemetry-sym">Io,FHA</span>
+                </div>
+                <div class="telemetry-val"><span id="card_Io">0.63</span> <span class="telemetry-unit">A</span></div>
+                <div class="telemetry-sub" id="card_Io_target">Target Io: 0.63 A</div>
+              </td>
+            </tr>
+            <tr>
+              <td data-formula="K">
+                <div class="telemetry-top">
+                  <span>Tank Gain</span>
+                  <span class="telemetry-sym">K(Q,m,Fx)</span>
+                </div>
+                <div class="telemetry-val" id="card_K">1.0000</div>
+                <div class="telemetry-sub" id="card_K_req">Req Gain: 1.010</div>
+              </td>
+              <td data-formula="Fx_peak">
+                <div class="telemetry-top">
+                  <span>ZVS Boundary</span>
+                  <span class="telemetry-sym">Fx,min</span>
+                </div>
+                <div class="telemetry-val"><span id="card_FxPeak">0.503</span> <span class="telemetry-unit" id="card_fsPeak">(55.7k)</span></div>
+                <div class="telemetry-sub" id="card_K_peak">Peak Kmax: 1.274</div>
+              </td>
+            </tr>
+            <tr>
+              <td data-formula="Rac">
+                <div class="telemetry-top">
+                  <span>Reflected Load</span>
+                  <span class="telemetry-sym">Rac</span>
+                </div>
+                <div class="telemetry-val"><span id="card_Rac">3.600</span> <span class="telemetry-unit">Ω</span></div>
+              </td>
+              <td data-formula="Io">
+                <div class="telemetry-top">
+                  <span>DC Load Resistance</span>
+                  <span class="telemetry-sym">Ro = Vo/Io</span>
+                </div>
+                <div class="telemetry-val"><span id="card_Ro">640.0</span> <span class="telemetry-unit">Ω</span></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </aside>
 
-    <!-- Right Split View: Top Gain Curve + Bottom Oscilloscope -->
+    <!-- Right Split View: 70% Top Gain Curve + 30% Bottom Timing Diagram -->
     <main class="charts-main">
-      <!-- Top Panel: Gain Chart -->
-      <section class="chart-panel">
+      <!-- Top Panel (70%): Gain Chart -->
+      <section class="chart-panel gain-panel">
         <div class="panel-bar">
-          <div style="display:flex;align-items:center;gap:12px">
-            <span class="panel-title">Resonant Tank Gain Characteristic — K(Q, m, Fx)</span>
-            <span class="panel-hint" id="dragHint">Click or drag operating point on curve to tune fs (110.67 kHz)</span>
-          </div>
+          <span class="panel-title">Resonant Tank Gain Characteristic — K(Q, m, Fx)</span>
           <div style="display:flex;align-items:center;gap:8px">
-            <button id="btnLockPeak" class="btn btn-amber" style="padding:4px 10px;font-size:13px" title="Set switching frequency to Peak Gain boundary (Fx,min)">Set fs at Peak Gain</button>
-            <button id="btnLockFr" class="btn" style="padding:4px 10px;font-size:13px" title="Set switching frequency to Resonant Frequency (Fx = 1.0)">Set fs = fr (Fx = 1.0)</button>
+            <button id="btnLockPeak" class="btn" style="padding:4px 10px;font-size:13px">Set fs at Peak Gain</button>
+            <button id="btnLockFr" class="btn" style="padding:4px 10px;font-size:13px">Set fs = fr (Fx = 1.0)</button>
             <button id="btnToggleRef" class="btn" style="padding:4px 10px;font-size:13px">Hide Ref Q-Curves</button>
           </div>
         </div>
@@ -925,16 +1099,28 @@
         </div>
       </section>
 
-      <!-- Bottom Panel: Time-Domain Waveforms -->
-      <section class="chart-panel">
+      <!-- Bottom Panel (30%): Steady-State Time-Domain Waveforms (8 Half-Cycles, All Peak on Left Gutter) -->
+      <section class="chart-panel scope-panel">
         <div class="panel-bar">
-          <span class="panel-title">Steady-State Time-Domain Waveforms (2 Switching Cycles — Table 1)</span>
-          <div class="scope-stats">
-            <div>Vsw: <strong id="stat_Vsw" style="color:#b45309">±33 V</strong></div>
-            <div>Vo / Io: <strong id="stat_VoIo" style="color:#047857">400.0 V / 0.63 A</strong></div>
-            <div>ILr (pk / rms): <strong id="stat_ILr" style="color:#047857">16.2 A / 11.4 A</strong></div>
-            <div>ILm (pk): <strong id="stat_ILm" style="color:#1d4ed8">6.17 A</strong></div>
-            <div id="stat_fw_wrap">Freewheeling: <strong id="stat_fw" style="color:#b45309">0.0%</strong></div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="panel-title">Steady-State Time-Domain Waveforms</span>
+            <div id="wfSwitcherWrap" class="wf-view-switcher" style="display:none">
+              <button id="btnWfSetA" class="wf-view-btn active-a">
+                <span class="set-swatch" style="background:#1d4ed8"></span>
+                <span>Set A</span>
+              </button>
+              <button id="btnWfSetB" class="wf-view-btn" style="display:none">
+                <span class="set-swatch" style="background:#dc2626"></span>
+                <span>Set B</span>
+              </button>
+              <button id="btnWfSetC" class="wf-view-btn" style="display:none">
+                <span class="set-swatch" style="background:#0d9488"></span>
+                <span>Set C</span>
+              </button>
+            </div>
+          </div>
+          <div class="scope-freewheel-box">
+            Freewheeling: <span id="stat_fw" style="color:#b45309">0.0%</span>
           </div>
         </div>
         <div class="canvas-wrap">
@@ -950,27 +1136,29 @@
       <div class="modal-header">
         <div>
           <div style="font-size:17px;font-weight:700;color:#0f172a">Mathematical Derivation</div>
-          <div id="modRef" style="font-size:13px;color:#475569;margin-top:2px">Infineon AN 2012-09</div>
+          <div id="modRef" style="font-size:13.5px;color:#475569;margin-top:2px">Infineon AN 2012-09</div>
         </div>
         <button id="btnCloseModal" class="btn" style="padding:5px 12px">Close (X)</button>
       </div>
       <div id="modalTabs" class="modal-tabs"></div>
       <div class="modal-body">
-        <div>
-          <div style="font-size:12px;font-family:var(--font-mono);text-transform:uppercase;color:#1d4ed8;font-weight:700">Parameter</div>
-          <div id="modTitle" style="font-size:19px;font-weight:700;color:#0f172a;margin-top:2px"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div id="modSetIndicator" style="font-size:13px;font-family:var(--font-mono);text-transform:uppercase;color:#1d4ed8;font-weight:700">Parameter (Set A)</div>
+            <div id="modTitle" style="font-size:19px;font-weight:700;color:#0f172a;margin-top:2px"></div>
+          </div>
         </div>
         <div class="formula-card">
           <div>
-            <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:6px">Standard Equation:</div>
+            <div style="font-size:13.5px;font-weight:700;color:#475569;margin-bottom:6px">Standard Equation:</div>
             <div id="modEq" class="formula-display-box"></div>
           </div>
           <div>
-            <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:6px">Live Substitution:</div>
+            <div style="font-size:13.5px;font-weight:700;color:#475569;margin-bottom:6px">Live Substitution:</div>
             <div id="modSub" class="formula-display-box" style="color:#1e293b"></div>
           </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:4px;border-top:1px solid #e2e8f0">
-            <span style="font-family:var(--font-sans);font-size:15px;font-weight:600;color:#334155">Calculated Result:</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:6px;border-top:1px solid #cbd5e1">
+            <span style="font-family:var(--font-sans);font-size:15.5px;font-weight:700;color:#1e293b">Calculated Result:</span>
             <span id="modRes" style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:#1d4ed8"></span>
           </div>
         </div>
@@ -978,9 +1166,28 @@
     </div>
   </div>
 
+  <!-- Export Engineering Report Modal -->
+  <div id="reportModal" class="modal-backdrop">
+    <div class="modal-box report-modal-box">
+      <div class="modal-header">
+        <div>
+          <div style="font-size:17px;font-weight:700;color:#0f172a">LLC Resonant Converter — Engineering Analysis Report</div>
+          <div id="reportTimestamp" style="font-size:13px;color:#475569;margin-top:2px;font-family:var(--font-mono)"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button id="btnDownloadCSV" class="btn">Download CSV</button>
+          <button id="btnDownloadHTML" class="btn">Download HTML Report</button>
+          <button id="btnPrintReport" class="btn btn-primary-solid">Print / Save PDF</button>
+          <button id="btnCloseReportModal" class="btn">Close (X)</button>
+        </div>
+      </div>
+      <div id="reportModalBody" class="modal-body"></div>
+    </div>
+  </div>
+
   <script>
-    // --- State & Default Infineon AN 2012-09 Parameters ---
-    const DEFAULT_STATE = {
+    // --- Default Infineon AN 2012-09 Parameters for Set A, Set B, Set C ---
+    const DEFAULT_SET_A = {
       Vin: 33.0,
       Vo: 400.0,
       Po: 250.0,
@@ -991,10 +1198,61 @@
       fs_kHz: 110.67
     };
 
-    let state = { ...DEFAULT_STATE };
+    const DEFAULT_SET_B = {
+      Vin: 33.0,
+      Vo: 400.0,
+      Po: 250.0,
+      npNs: 0.0833,
+      Lr_uH: 2.2,
+      Cr_nF: 940.0,
+      Lm_uH: 12.2,
+      fs_kHz: 82.0
+    };
+
+    const DEFAULT_SET_C = {
+      Vin: 33.0,
+      Vo: 400.0,
+      Po: 350.0,
+      npNs: 0.0833,
+      Lr_uH: 2.2,
+      Cr_nF: 940.0,
+      Lm_uH: 12.2,
+      fs_kHz: 135.0
+    };
+
+    const SET_COLORS = {
+      A: { main: '#1d4ed8', badgeClass: 'set-a', tabClass: 'active-a' },
+      B: { main: '#dc2626', badgeClass: 'set-b', tabClass: 'active-b' },
+      C: { main: '#0d9488', badgeClass: 'set-c', tabClass: 'active-c' }
+    };
+
+    let setsState = {
+      A: { ...DEFAULT_SET_A },
+      B: { ...DEFAULT_SET_B },
+      C: { ...DEFAULT_SET_C }
+    };
+
+    let setEnabled = {
+      A: true,
+      B: false,
+      C: false
+    };
+
+    let activeSet = 'A';       // Currently edited parameter set in sidebar ('A', 'B', or 'C')
+    let scopeViewSet = 'A';    // Currently viewed single parameter set in Steady-State Time-Domain Waveforms ('A', 'B', or 'C')
     let showRefCurves = true;
     let isDraggingGain = false;
+    let draggingTargetSet = 'A';
     let activeFormulaKey = 'K';
+
+    function getEnabledSetKeys() {
+      return ['A', 'B', 'C'].filter(k => setEnabled[k]);
+    }
+
+    function getActiveState() {
+      if (!setEnabled[activeSet]) activeSet = 'A';
+      return setsState[activeSet];
+    }
 
     // Tank Gain Equation (Eq. 1 in Infineon AN 2012-09)
     function calcTankGain(Q, m, Fx) {
@@ -1076,52 +1334,60 @@
       };
     }
 
-    // --- Bidirectional Parameter Coupling ---
+    function getRegionLabel(region) {
+      if (region === 'CAPACITIVE_HAZARD') return 'CAPACITIVE (ZCS HAZARD)';
+      if (region === 'BELOW_RESONANCE') return 'INDUCTIVE — BELOW RESONANCE (ZVS + ZCS)';
+      if (region === 'AT_RESONANCE') return 'INDUCTIVE — AT RESONANCE (UNITY GAIN)';
+      return 'INDUCTIVE — ABOVE RESONANCE (ZVS BUCK)';
+    }
+
+    // --- Bidirectional Parameter Coupling on Active Parameter Set ---
     function handleParamEdit(field, rawVal) {
       const val = parseFloat(rawVal);
       if (Number.isNaN(val) || val <= 0) return;
 
-      const cur = analyzeSystem(state);
+      const s = getActiveState();
+      const cur = analyzeSystem(s);
 
       if (field === 'Lr_uH' || field === 'Cr_nF' || field === 'Lm_uH') {
-        state[field] = val;
+        s[field] = val;
       } else if (field === 'fr_kHz') {
         const fr_Hz = val * 1e3;
         const Z0 = cur.Q * cur.Rac;
         const Lr_H = Z0 / (2 * Math.PI * fr_Hz);
         const Cr_F = 1 / (2 * Math.PI * fr_Hz * Z0);
         const Lm_H = (cur.m - 1) * Lr_H;
-        state.Lr_uH = Number((Lr_H * 1e6).toFixed(3));
-        state.Cr_nF = Number((Cr_F * 1e9).toFixed(2));
-        state.Lm_uH = Number((Lm_H * 1e6).toFixed(3));
-        state.fs_kHz = Number((cur.Fx * val).toFixed(2));
+        s.Lr_uH = Number((Lr_H * 1e6).toFixed(3));
+        s.Cr_nF = Number((Cr_F * 1e9).toFixed(2));
+        s.Lm_uH = Number((Lm_H * 1e6).toFixed(3));
+        s.fs_kHz = Number((cur.Fx * val).toFixed(2));
       } else if (field === 'm') {
         const mSafe = Math.max(1.05, val);
-        state.Lm_uH = Number(((mSafe - 1) * state.Lr_uH).toFixed(3));
+        s.Lm_uH = Number(((mSafe - 1) * s.Lr_uH).toFixed(3));
       } else if (field === 'Q') {
         const fr_Hz = cur.fr_kHz * 1e3;
         const Z0 = val * cur.Rac;
         const Lr_H = Z0 / (2 * Math.PI * fr_Hz);
         const Cr_F = 1 / (2 * Math.PI * fr_Hz * Z0);
         const Lm_H = (cur.m - 1) * Lr_H;
-        state.Lr_uH = Number((Lr_H * 1e6).toFixed(3));
-        state.Cr_nF = Number((Cr_F * 1e9).toFixed(2));
-        state.Lm_uH = Number((Lm_H * 1e6).toFixed(3));
+        s.Lr_uH = Number((Lr_H * 1e6).toFixed(3));
+        s.Cr_nF = Number((Cr_F * 1e9).toFixed(2));
+        s.Lm_uH = Number((Lm_H * 1e6).toFixed(3));
       } else if (field === 'fs_kHz') {
-        state.fs_kHz = val;
+        s.fs_kHz = val;
       } else if (field === 'Fx') {
         const fxClamped = Math.min(2.0, Math.max(0.1, val));
-        state.fs_kHz = Number((fxClamped * cur.fr_kHz).toFixed(2));
+        s.fs_kHz = Number((fxClamped * cur.fr_kHz).toFixed(2));
       } else if (field === 'Io') {
-        state.Po = Number((state.Vo * val).toFixed(2));
+        s.Po = Number((s.Vo * val).toFixed(2));
       } else {
-        state[field] = val;
+        s[field] = val;
       }
 
       renderAll(field);
     }
 
-    // --- Waveform Generator (Table 1 in AN 2012-09) ---
+    // --- Single-Set Steady-State Time-Domain Waveform Generator (8 Half-Cycles = 4 Full Switching Cycles) ---
     function generateWaveforms(s, a) {
       const fs_Hz = Math.max(s.fs_kHz, 1) * 1e3;
       const fr_Hz = a.fr_kHz * 1e3;
@@ -1140,12 +1406,14 @@
       const Io = s.Po / Math.max(s.Vo, 1);
       const Ipri_load_avg = Io / s.npNs;
 
-      const totalSamples = 600;
+      // 4 Full Switching Cycles = 8 Half-Cycles (8 Diode Conduction Pulses)
+      const totalTime = 4 * Ts;
+      const totalSamples = 1200;
       const t_us = [], Vsw = [], ILr = [], ILm = [], ID1D4 = [], ID2D3 = [];
       let sumSqILr = 0, maxILr = 0, maxID = 0;
 
       for (let i = 0; i <= totalSamples; i++) {
-        const t = (i / totalSamples) * (2 * Ts);
+        const t = (i / totalSamples) * totalTime;
         const tMod = t % Ts;
         const isFirstHalf = tMod < halfTs;
         const tau = isFirstHalf ? tMod : tMod - halfTs;
@@ -1211,17 +1479,20 @@
       return {
         t_us, Vsw, ILr, ILm, ID1D4, ID2D3,
         ILr_pk: maxILr,
-        ILr_rms: Math.sqrt(sumSqILr / (totalSamples + 1)),
         ILm_pk,
         ID_pk: maxID,
-        freewheelingRatio
+        freewheelingRatio,
+        Ts_us: Ts * 1e6
       };
     }
 
-    // --- Draw Gain Curve Canvas ---
-    let gainChartGeometry = { left: 68, right: 0, top: 34, bottom: 0, minFx: 0.1, maxFx: 2.0, maxK: 2.5 };
+    // --- Draw Gain Curve Canvas (Up to 3 Sets: A, B, C — All SOLID Colored Lines, Larger Crisp Fonts) ---
+    let gainChartGeometry = {
+      left: 72, right: 0, top: 40, bottom: 0, minFx: 0.1, maxFx: 2.0, maxK: 2.5,
+      opCoords: { A: { x: 0, y: 0 }, B: { x: -100, y: -100 }, C: { x: -100, y: -100 } }
+    };
 
-    function drawGainChart(a) {
+    function drawGainChart(analysesMap) {
       const canvas = document.getElementById('gainCanvas');
       if (!canvas) return;
       const dpr = window.devicePixelRatio || 1;
@@ -1238,30 +1509,35 @@
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, W, H);
 
-      const padL = 68, padR = 24, padT = 36, padB = 46;
+      const padL = 72, padR = 24, padT = 40, padB = 48;
       const plotW = W - padL - padR;
       const plotH = H - padT - padB;
-      const maxK = Math.max(2.4, Math.ceil(a.K_peak * 1.18 * 2) / 2);
 
-      gainChartGeometry = { left: padL, right: padL + plotW, top: padT, bottom: padT + plotH, minFx: 0.1, maxFx: 2.0, maxK };
+      const enabledKeys = getEnabledSetKeys();
+      let peakMax = 0;
+      enabledKeys.forEach(k => {
+        if (analysesMap[k].K_peak > peakMax) peakMax = analysesMap[k].K_peak;
+      });
+      const maxK = Math.max(2.4, Math.ceil(peakMax * 1.18 * 2) / 2);
 
       const fxToX = fx => padL + ((fx - 0.1) / 1.9) * plotW;
       const kToY = k => padT + plotH - (k / maxK) * plotH;
 
-      const xPeak = Math.max(padL, Math.min(padL + plotW, fxToX(a.Fx_peak)));
+      const activeAnalysis = analysesMap[activeSet] || analysesMap.A;
+      const xPeakActive = Math.max(padL, Math.min(padL + plotW, fxToX(activeAnalysis.Fx_peak)));
       const xRes = fxToX(1.0);
 
       // 1. Shaded Regions
-      ctx.fillStyle = 'rgba(254, 226, 226, 0.55)';
-      ctx.fillRect(padL, padT, xPeak - padL, plotH);
-      ctx.fillStyle = 'rgba(236, 253, 245, 0.55)';
-      ctx.fillRect(xPeak, padT, padL + plotW - xPeak, plotH);
+      ctx.fillStyle = 'rgba(254, 226, 226, 0.45)';
+      ctx.fillRect(padL, padT, xPeakActive - padL, plotH);
+      ctx.fillStyle = 'rgba(236, 253, 245, 0.45)';
+      ctx.fillRect(xPeakActive, padT, padL + plotW - xPeakActive, plotH);
 
       // Grid lines & Ticks
       ctx.strokeStyle = '#e2e8f0';
       ctx.lineWidth = 1;
-      ctx.fillStyle = '#334155';
-      ctx.font = '600 12px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '700 13px "JetBrains Mono", monospace';
 
       for (let fx = 0.1; fx <= 2.001; fx += 0.1) {
         const x = fxToX(fx);
@@ -1269,7 +1545,7 @@
         ctx.moveTo(x, padT);
         ctx.lineTo(x, padT + plotH);
         ctx.stroke();
-        ctx.fillText(fx.toFixed(1), x - 11, padT + plotH + 18);
+        ctx.fillText(fx.toFixed(1), x - 12, padT + plotH + 20);
       }
 
       const yStep = maxK <= 3.0 ? 0.5 : 1.0;
@@ -1279,42 +1555,28 @@
         ctx.moveTo(padL, y);
         ctx.lineTo(padL + plotW, y);
         ctx.stroke();
-        ctx.fillText(k.toFixed(1), padL - 34, y + 4);
+        ctx.fillText(k.toFixed(1), padL - 38, y + 4);
       }
+
+      // Outer Plot Frame Border
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(padL, padT, plotW, plotH);
 
       // Region Labels
-      ctx.font = '700 12px "Inter", sans-serif';
-      if (xPeak - padL > 110) {
+      ctx.font = '700 13px "Inter", sans-serif';
+      if (xPeakActive - padL > 120) {
         ctx.fillStyle = '#b91c1c';
-        ctx.fillText('CAPACITIVE REGION (ZCS HAZARD)', padL + 10, padT + 20);
+        ctx.fillText('CAPACITIVE REGION (ZCS HAZARD)', padL + 12, padT + 22);
       }
       ctx.fillStyle = '#047857';
-      ctx.fillText('INDUCTIVE REGION (ZVS SAFE)', xPeak + 10, padT + 20);
+      ctx.fillText('INDUCTIVE REGION (ZVS SAFE)', xPeakActive + 12, padT + 22);
 
-      // Boundary Lines (Fx_peak & Fx=1)
-      ctx.save();
-      ctx.setLineDash([5, 4]);
-      ctx.strokeStyle = '#d97706';
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.moveTo(xPeak, padT);
-      ctx.lineTo(xPeak, padT + plotH);
-      ctx.stroke();
-
-      ctx.setLineDash([3, 3]);
-      ctx.strokeStyle = '#64748b';
-      ctx.lineWidth = 1.3;
-      ctx.beginPath();
-      ctx.moveTo(xRes, padT);
-      ctx.lineTo(xRes, padT + plotH);
-      ctx.stroke();
-      ctx.restore();
-
-      // Reference Q Curves
+      // Reference Q Curves (for active set)
       if (showRefCurves) {
-        ctx.strokeStyle = 'rgba(100, 116, 139, 0.28)';
+        ctx.strokeStyle = 'rgba(100, 116, 139, 0.25)';
         ctx.lineWidth = 1.2;
-        a.refCurves.forEach(c => {
+        activeAnalysis.refCurves.forEach(c => {
           ctx.beginPath();
           c.points.forEach((pt, idx) => {
             const x = fxToX(pt.Fx);
@@ -1326,75 +1588,143 @@
         });
       }
 
-      // Required Gain Target Line
-      if (a.K_required <= maxK) {
-        const yReq = kToY(a.K_required);
+      // Resonance vertical line (Fx = 1.0)
+      ctx.save();
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(xRes, padT);
+      ctx.lineTo(xRes, padT + plotH);
+      ctx.stroke();
+      ctx.restore();
+
+      // Active Set ZVS Boundary Vertical Line & Required Gain Horizontal Line
+      ctx.save();
+      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(xPeakActive, padT);
+      ctx.lineTo(xPeakActive, padT + plotH);
+      ctx.stroke();
+      ctx.restore();
+
+      if (activeAnalysis.K_required <= maxK) {
+        const yReqAct = kToY(activeAnalysis.K_required);
         ctx.save();
         ctx.setLineDash([6, 4]);
         ctx.strokeStyle = '#be123c';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.moveTo(padL, yReq);
-        ctx.lineTo(padL + plotW, yReq);
+        ctx.moveTo(padL, yReqAct);
+        ctx.lineTo(padL + plotW, yReqAct);
         ctx.stroke();
         ctx.restore();
       }
 
-      // Active Tank Gain Curve K(Q, m, Fx)
-      ctx.strokeStyle = '#1d4ed8';
-      ctx.lineWidth = 3.0;
-      ctx.beginPath();
-      a.sweepPoints.forEach((pt, idx) => {
-        const x = fxToX(pt.Fx);
-        const y = Math.max(padT, kToY(pt.K));
-        if (idx === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+      // --- Plot ALL Enabled Parameter Sets with SOLID Colored Lines ---
+      const opCoords = {
+        A: { x: -100, y: -100 },
+        B: { x: -100, y: -100 },
+        C: { x: -100, y: -100 }
+      };
+
+      const orderedKeys = enabledKeys.slice().sort((a, b) => (a === activeSet ? 1 : b === activeSet ? -1 : 0));
+
+      orderedKeys.forEach(key => {
+        const an = analysesMap[key];
+        const color = SET_COLORS[key].main;
+        const isCurrentActive = (key === activeSet);
+
+        ctx.save();
+        ctx.setLineDash([]);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = isCurrentActive ? 3.5 : 2.6;
+        ctx.beginPath();
+        an.sweepPoints.forEach((pt, idx) => {
+          const x = fxToX(pt.Fx);
+          const y = Math.max(padT, kToY(pt.K));
+          if (idx === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        ctx.restore();
+
+        // Peak Triangle Marker
+        const xPeak = Math.max(padL, Math.min(padL + plotW, fxToX(an.Fx_peak)));
+        const yPeak = Math.max(padT, kToY(an.K_peak));
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(xPeak, yPeak - 7);
+        ctx.lineTo(xPeak - 6, yPeak + 5);
+        ctx.lineTo(xPeak + 6, yPeak + 5);
+        ctx.closePath();
+        ctx.fill();
       });
-      ctx.stroke();
 
-      // Peak Triangle Marker
-      const yPeak = Math.max(padT, kToY(a.K_peak));
-      ctx.fillStyle = '#d97706';
-      ctx.beginPath();
-      ctx.moveTo(xPeak, yPeak - 7);
-      ctx.lineTo(xPeak - 6, yPeak + 5);
-      ctx.lineTo(xPeak + 6, yPeak + 5);
-      ctx.closePath();
-      ctx.fill();
+      // Draw Operating Point Circles (A, B, C)
+      orderedKeys.forEach(key => {
+        const an = analysesMap[key];
+        const color = SET_COLORS[key].main;
+        const isCurrentActive = (key === activeSet);
 
-      // Draggable Operating Point Circle
-      const clampedFx = Math.min(2.0, Math.max(0.1, a.Fx));
-      const xOp = fxToX(clampedFx);
-      const yOp = Math.max(padT, kToY(a.K));
+        const clampedFx = Math.min(2.0, Math.max(0.1, an.Fx));
+        const xOp = fxToX(clampedFx);
+        const yOp = Math.max(padT, kToY(an.K));
+        opCoords[key] = { x: xOp, y: yOp };
 
-      ctx.fillStyle = a.region === 'CAPACITIVE_HAZARD' ? '#dc2626' : '#16a34a';
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.arc(xOp, yOp, 10, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.stroke();
+        ctx.fillStyle = an.region === 'CAPACITIVE_HAZARD' ? '#dc2626' : color;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(xOp, yOp, isCurrentActive ? 11 : 9, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 11.5px "Inter", sans-serif';
+        ctx.fillText(key, xOp - 4, yOp + 4);
+      });
+
+      gainChartGeometry = {
+        left: padL, right: padL + plotW, top: padT, bottom: padT + plotH,
+        minFx: 0.1, maxFx: 2.0, maxK,
+        opCoords
+      };
 
       // Axis Titles & Legend
       ctx.fillStyle = '#0f172a';
-      ctx.font = '700 13px "Inter", sans-serif';
-      ctx.fillText('Normalized Switching Frequency (Fx = fs / fr)', padL + plotW / 2 - 140, H - 8);
+      ctx.font = '700 14px "Inter", sans-serif';
+      ctx.fillText('Normalized Switching Frequency (Fx = fs / fr)', padL + plotW / 2 - 150, H - 8);
 
       ctx.save();
-      ctx.translate(18, padT + plotH / 2 + 80);
+      ctx.translate(20, padT + plotH / 2 + 95);
       ctx.rotate(-Math.PI / 2);
       ctx.fillText('Resonant Tank Gain K(Q, m, Fx)', 0, 0);
       ctx.restore();
 
       // Top Legend
-      ctx.font = '600 12px "Inter", sans-serif';
-      ctx.fillStyle = '#1e293b';
-      const legText = `● Operating Point (Fx=${a.Fx.toFixed(3)}, K=${a.K.toFixed(3)})    ▲ Peak (Fx,min=${a.Fx_peak.toFixed(3)}, Kmax=${a.K_peak.toFixed(2)})    — Required Gain (${a.K_required.toFixed(2)})`;
-      ctx.fillText(legText, Math.max(padL, W - padR - ctx.measureText(legText).width), 22);
+      ctx.font = '700 13px "Inter", sans-serif';
+      if (enabledKeys.length === 1) {
+        const aA = analysesMap.A;
+        ctx.fillStyle = '#0f172a';
+        const legText = `● Set A (Fx=${aA.Fx.toFixed(3)}, K=${aA.K.toFixed(3)})     ▲ Peak (Fx,min=${aA.Fx_peak.toFixed(3)}, Kmax=${aA.K_peak.toFixed(2)})     — Req Gain (${aA.K_required.toFixed(2)})`;
+        ctx.fillText(legText, Math.max(padL, W - padR - ctx.measureText(legText).width), 25);
+      } else {
+        let cursorX = padL;
+        enabledKeys.forEach(k => {
+          const an = analysesMap[k];
+          const txt = `● Set ${k}: Fx=${an.Fx.toFixed(3)}, K=${an.K.toFixed(3)}, Vo=${an.Vo_predicted.toFixed(0)}V`;
+          ctx.fillStyle = SET_COLORS[k].main;
+          ctx.fillText(txt, cursorX, 25);
+          cursorX += ctx.measureText(txt).width + 26;
+        });
+      }
     }
 
-    // --- Draw Oscilloscope Canvas ---
-    function drawScope(s, a, wf) {
+    // --- Draw Oscilloscope Canvas (8 Half-Cycles = 4 Full Cycles, All Peak Readouts on Left Gutter) ---
+    function drawScope(setKey, s, a, wf) {
       const canvas = document.getElementById('scopeCanvas');
       if (!canvas) return;
       const dpr = window.devicePixelRatio || 1;
@@ -1411,34 +1741,42 @@
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, W, H);
 
-      const padL = 92, padR = 24, padT = 14, padB = 30;
+      // Dedicated Left Gutter (padL = 198) holds all channel Peak values clearly
+      const padL = 198, padR = 24, padT = 8, padB = 26;
       const plotW = W - padL - padR;
       const plotH = H - padT - padB;
 
-      const b0Top = padT, b0H = plotH * 0.24, b0Mid = b0Top + b0H / 2;
-      const b1Top = b0Top + b0H + 8, b1H = plotH * 0.42, b1Mid = b1Top + b1H / 2;
-      const b2Top = b1Top + b1H + 8, b2H = plotH - b0H - b1H - 16, b2Base = b2Top + b2H - 4;
+      // Left Gutter Background
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(0, 0, padL, H - padB);
 
+      const b0Top = padT, b0H = plotH * 0.23, b0Mid = b0Top + b0H / 2;
+      const b1Top = b0Top + b0H + 4, b1H = plotH * 0.43, b1Mid = b1Top + b1H / 2;
+      const b2Top = b1Top + b1H + 4, b2H = plotH - b0H - b1H - 8, b2Base = b2Top + b2H - 3;
+
+      // Vertical Grid Lines (8 Half-Cycle Subdivisions)
       ctx.strokeStyle = '#e2e8f0';
       ctx.lineWidth = 1;
-      for (let i = 0; i <= 10; i++) {
-        const x = padL + (i / 10) * plotW;
+      for (let i = 0; i <= 8; i++) {
+        const x = padL + (i / 8) * plotW;
         ctx.beginPath();
         ctx.moveTo(x, padT);
         ctx.lineTo(x, padT + plotH);
         ctx.stroke();
       }
 
+      // Freewheeling highlight across all 8 Half-Cycles
       if (a.region === 'BELOW_RESONANCE' && wf.freewheelingRatio > 0.01) {
         const fw = wf.freewheelingRatio;
-        const hcW = plotW / 4;
-        ctx.fillStyle = 'rgba(254, 243, 199, 0.7)';
-        for (let hc = 0; hc < 4; hc++) {
+        const hcW = plotW / 8;
+        ctx.fillStyle = 'rgba(254, 243, 199, 0.65)';
+        for (let hc = 0; hc < 8; hc++) {
           const hcStart = padL + hc * hcW;
           ctx.fillRect(hcStart + (1 - fw) * hcW, padT, fw * hcW, plotH);
         }
       }
 
+      // Zero reference lines
       ctx.setLineDash([4, 4]);
       ctx.strokeStyle = '#94a3b8';
       [b0Mid, b1Mid, b2Base].forEach(y0 => {
@@ -1449,21 +1787,33 @@
       });
       ctx.setLineDash([]);
 
+      // Horizontal Channel Band Separators & Left Gutter Border
       ctx.strokeStyle = '#cbd5e1';
-      [b1Top - 4, b2Top - 4].forEach(ySep => {
+      ctx.lineWidth = 1;
+      [b1Top - 2, b2Top - 2, padT + plotH].forEach(ySep => {
         ctx.beginPath();
         ctx.moveTo(0, ySep);
         ctx.lineTo(W, ySep);
         ctx.stroke();
       });
 
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(padL, 0);
+      ctx.lineTo(padL, padT + plotH);
+      ctx.stroke();
+
       const N = wf.t_us.length;
       const getX = idx => padL + (idx / (N - 1)) * plotW;
 
+      const vMax = Math.max(s.Vin, 1) * 1.3;
+      const iPriMax = Math.max(wf.ILr_pk, wf.ILm_pk, 1) * 1.18;
+      const iSecMax = Math.max(wf.ID_pk, 0.1) * 1.2;
+
       // CH1: Vsw
-      const vMax = Math.max(s.Vin * 1.25, 1);
       ctx.strokeStyle = '#d97706';
-      ctx.lineWidth = 2.2;
+      ctx.lineWidth = 2.0;
       ctx.beginPath();
       for (let i = 0; i < N; i++) {
         const x = getX(i), y = b0Mid - (wf.Vsw[i] / vMax) * (b0H * 0.42);
@@ -1472,32 +1822,30 @@
       ctx.stroke();
 
       // CH2: ILm & ILr
-      const iPriMax = Math.max(wf.ILr_pk, wf.ILm_pk, 1) * 1.18;
       ctx.save();
-      ctx.setLineDash([6, 4]);
+      ctx.setLineDash([5, 4]);
       ctx.strokeStyle = '#2563eb';
-      ctx.lineWidth = 2.0;
+      ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let i = 0; i < N; i++) {
-        const x = getX(i), y = b1Mid - (wf.ILm[i] / iPriMax) * (b1H * 0.45);
+        const x = getX(i), y = b1Mid - (wf.ILm[i] / iPriMax) * (b1H * 0.44);
         if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();
       ctx.restore();
 
       ctx.strokeStyle = a.region === 'CAPACITIVE_HAZARD' ? '#dc2626' : '#059669';
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2.3;
       ctx.beginPath();
       for (let i = 0; i < N; i++) {
-        const x = getX(i), y = b1Mid - (wf.ILr[i] / iPriMax) * (b1H * 0.45);
+        const x = getX(i), y = b1Mid - (wf.ILr[i] / iPriMax) * (b1H * 0.44);
         if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
       // CH3: ID1,D4 & ID2,D3
-      const iSecMax = Math.max(wf.ID_pk, 0.1) * 1.18;
       ctx.strokeStyle = '#0284c7';
-      ctx.lineWidth = 2.2;
+      ctx.lineWidth = 2.0;
       ctx.beginPath();
       for (let i = 0; i < N; i++) {
         const x = getX(i), y = b2Base - (wf.ID1D4[i] / iSecMax) * (b2H * 0.82);
@@ -1505,8 +1853,8 @@
       }
       ctx.stroke();
 
-      ctx.strokeStyle = '#7c3aed';
-      ctx.lineWidth = 2.2;
+      ctx.strokeStyle = '#de1212';
+      ctx.lineWidth = 2.0;
       ctx.beginPath();
       for (let i = 0; i < N; i++) {
         const x = getX(i), y = b2Base - (wf.ID2D3[i] / iSecMax) * (b2H * 0.82);
@@ -1514,44 +1862,60 @@
       }
       ctx.stroke();
 
-      // Left Channel Labels
-      ctx.font = '700 13px "JetBrains Mono", monospace';
+      // --- Left Gutter Technical Readouts (All Peak Values Consolidated Here) ---
+      // Band 1: Vsw
+      ctx.font = '700 13.5px "JetBrains Mono", monospace';
       ctx.fillStyle = '#b45309';
-      ctx.fillText('Vsw', 12, b0Mid - 4);
-      ctx.font = '600 12px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#475569';
-      ctx.fillText(`±${s.Vin.toFixed(0)} V`, 12, b0Mid + 14);
+      ctx.fillText('Vsw :', 10, b0Mid + 4);
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText(`±${s.Vin.toFixed(0)} V`, 56, b0Mid + 4);
+
+      // Band 2: Primary Currents (ILr pk, ILm pk)
+      const b1Row1 = b1Top + Math.max(12, b1H * 0.32);
+      const b1Row2 = b1Top + Math.max(26, b1H * 0.70);
+
 
       ctx.font = '700 13px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#059669';
-      ctx.fillText('ILr', 12, b1Mid - 10);
-      ctx.fillStyle = '#2563eb';
-      ctx.fillText('ILm', 46, b1Mid - 10);
-      ctx.font = '600 12px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#475569';
-      ctx.fillText(`±${wf.ILr_pk.toFixed(1)} A`, 12, b1Mid + 10);
+      ctx.fillStyle = a.region === 'CAPACITIVE_HAZARD' ? '#dc2626' : '#047857';
+      ctx.fillText('ILr,pk :', 10, b1Row1);
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText(`${wf.ILr_pk.toFixed(2)} A`, 86, b1Row1);
 
-      ctx.font = '700 12px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#0284c7';
-      ctx.fillText('ID1,D4', 12, b2Top + 16);
-      ctx.fillStyle = '#7c3aed';
-      ctx.fillText('ID2,D3', 12, b2Top + 32);
-      ctx.font = '600 12px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#475569';
-      ctx.fillText(`pk:${wf.ID_pk.toFixed(2)}A`, 12, b2Top + 48);
+      ctx.fillStyle = '#1d4ed8';
+      ctx.fillText('ILm,pk :', 10, b1Row2);
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText(`${wf.ILm_pk.toFixed(2)} A`, 86, b1Row2);
 
-      // Time ticks
+      // Band 3: Secondary Diode Current Peak
+      const b2Row1 = b2Top + Math.max(15, b2H * 0.40);
+      const b2Row2 = b2Top + Math.max(31, b2H * 0.80);
+
+      // ID1,D4
+      ctx.font = '700 12.5px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#0284c7';                     
+      ctx.fillText('ID1,D4  :', 10, b2Row1);
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText(`${wf.ID_pk.toFixed(2)} A`, 86, b2Row1);
+
+      // บรรทัดที่ 2: ID2,D3
+      ctx.font = '700 12.5px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#de1212';                     
+      ctx.fillText('ID2,D3  :', 10, b2Row2);
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText(`${wf.ID_pk.toFixed(2)} A`, 86, b2Row2);
+
+      // Time Axis Ticks (4 Full Cycles = 8 Half-Cycles)
       const totalUs = wf.t_us[N - 1] || 1;
-      ctx.fillStyle = '#1e293b';
-      ctx.font = '600 12px "JetBrains Mono", monospace';
-      for (let i = 0; i <= 5; i++) {
-        const x = padL + (i / 5) * plotW;
-        const tVal = ((i / 5) * totalUs).toFixed(2);
-        ctx.fillText(`${tVal} µs`, x - 20, H - 8);
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '700 12.5px "JetBrains Mono", monospace';
+      for (let i = 0; i <= 8; i += 2) {
+        const x = padL + (i / 8) * plotW;
+        const tVal = ((i / 8) * totalUs).toFixed(2);
+        ctx.fillText(`${tVal} µs`, x - 24, H - 7);
       }
     }
 
-    // --- Helper HTML Builders for Real Stacked Mathematical Notation (Seamless SVG Radical) ---
+    // --- Helper HTML Builders for Real Stacked Mathematical Notation ---
     const frac = (num, den) => `<span class="math-frac"><span class="num">${num}</span><span class="den">${den}</span></span>`;
     const sqrt = (rad) => `<span class="math-sqrt"><span class="math-sqrt-stem"><svg viewBox="0 0 16 100" preserveAspectRatio="none"><polyline points="1,58 4.5,50 9.5,96 15.5,0.9 16,0.9" fill="none" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></span><span class="radicand">${rad}</span></span>`;
 
@@ -1658,9 +2022,14 @@
 
     function openFormulaModal(key) {
       activeFormulaKey = key;
-      const a = analyzeSystem(state);
-      const catalog = getFormulaCatalog(state, a);
+      const s = getActiveState();
+      const a = analyzeSystem(s);
+      const catalog = getFormulaCatalog(s, a);
       const item = catalog[key] || catalog.K;
+
+      const modSetEl = document.getElementById('modSetIndicator');
+      modSetEl.textContent = `Parameter (Set ${activeSet})`;
+      modSetEl.style.color = SET_COLORS[activeSet].main;
 
       document.getElementById('modRef').textContent = item.ref;
       document.getElementById('modTitle').textContent = item.title;
@@ -1681,92 +2050,392 @@
       document.getElementById('formulaModal').classList.add('open');
     }
 
+    // --- Export Report Feature (Supports up to 3 Sets: Set A, Set B, Set C) ---
+    function buildReportContentHTML() {
+      const enabledKeys = getEnabledSetKeys();
+      const analyses = {};
+      const waveforms = {};
+      enabledKeys.forEach(k => {
+        analyses[k] = analyzeSystem(setsState[k]);
+        waveforms[k] = generateWaveforms(setsState[k], analyses[k]);
+      });
+
+      const gainImg = document.getElementById('gainCanvas').toDataURL('image/png');
+      const scopeImg = document.getElementById('scopeCanvas').toDataURL('image/png');
+      const nowStr = new Date().toLocaleString();
+
+      const makeRow = (name, unit, fn) => {
+        const vals = {};
+        enabledKeys.forEach(k => {
+          vals[k] = fn(setsState[k], analyses[k], waveforms[k]);
+        });
+        return { name, unit, vals };
+      };
+
+      const rows = [
+        makeRow('Input DC Voltage (Vin)', 'V', s => s.Vin.toFixed(1)),
+        makeRow('Target Output Voltage (Vo)', 'V', s => s.Vo.toFixed(1)),
+        makeRow('Output Load Power (Po)', 'W', s => s.Po.toFixed(1)),
+        makeRow('Target Output Current (Io)', 'A', (s, a) => a.Io_target.toFixed(2)),
+        makeRow('Transformer Turns Ratio (Np/Ns)', 'ratio', s => `${s.npNs} (1:${(1/s.npNs).toFixed(1)})`),
+        makeRow('Resonant Inductance (Lr)', 'µH', s => s.Lr_uH.toFixed(3)),
+        makeRow('Resonant Capacitance (Cr)', 'nF', s => s.Cr_nF.toFixed(2)),
+        makeRow('Magnetizing Inductance (Lm)', 'µH', s => s.Lm_uH.toFixed(3)),
+        makeRow('Resonant Frequency (fr)', 'kHz', (s, a) => a.fr_kHz.toFixed(2)),
+        makeRow('Inductance Ratio (m = (Lr+Lm)/Lr)', 'ratio', (s, a) => a.m.toFixed(3)),
+        makeRow('Quality Factor (Q)', 'factor', (s, a) => a.Q.toFixed(4)),
+        makeRow('Reflected Load Resistance (Rac)', 'Ω', (s, a) => a.Rac.toFixed(3)),
+        makeRow('DC Load Resistance (Ro)', 'Ω', (s, a) => a.Ro.toFixed(2)),
+        makeRow('Switching Frequency (fs)', 'kHz', s => s.fs_kHz.toFixed(2)),
+        makeRow('Normalized Frequency (Fx = fs/fr)', 'fs/fr', (s, a) => a.Fx.toFixed(4)),
+        makeRow('Resonant Tank Gain K(Q, m, Fx)', 'gain', (s, a) => a.K.toFixed(4)),
+        makeRow('Required Gain (Mreq)', 'gain', (s, a) => a.K_required.toFixed(4)),
+        makeRow('FHA Predicted Output Voltage (Vo,FHA)', 'V', (s, a) => a.Vo_predicted.toFixed(2)),
+        makeRow('FHA Predicted Output Current (Io,FHA)', 'A', (s, a) => a.Io_predicted.toFixed(2)),
+        makeRow('ZVS Boundary Frequency (Fx,min / fs,min)', 'boundary', (s, a) => `${a.Fx_peak.toFixed(3)} (${a.fs_peak_kHz.toFixed(2)} kHz)`),
+        makeRow('Maximum Obtainable Gain (Kmax)', 'gain', (s, a) => a.K_peak.toFixed(4)),
+        makeRow('Operating Region Status', 'mode', (s, a) => getRegionLabel(a.region)),
+        makeRow('Resonant Current (ILr Peak)', 'A', (s, a, wf) => `${wf.ILr_pk.toFixed(2)} A`),
+        makeRow('Magnetizing Current Peak (ILm,pk)', 'A', (s, a, wf) => wf.ILm_pk.toFixed(2)),
+        makeRow('Secondary Diode Peak Current (ID,pk)', 'A', (s, a, wf) => wf.ID_pk.toFixed(2)),
+        makeRow('Secondary Freewheeling Interval', '%', (s, a, wf) => `${(wf.freewheelingRatio * 100).toFixed(1)}%`)
+      ];
+
+      const tableHeadersHTML = enabledKeys.map(k =>
+        `<th style="color:${SET_COLORS[k].main}">Set ${k}</th>`
+      ).join('');
+
+      const tableRowsHTML = rows.map(r => `
+        <tr>
+          <td><strong>${r.name}</strong></td>
+          <td class="mono" style="color:#64748b">${r.unit}</td>
+          ${enabledKeys.map(k => `<td class="mono" style="color:${SET_COLORS[k].main}">${r.vals[k]}</td>`).join('')}
+        </tr>
+      `).join('');
+
+      return {
+        nowStr,
+        html: `
+          <div>
+            <div class="report-section-title">1. Design Parameters &amp; FHA Calculated Summary (${enabledKeys.map(k => 'Set ' + k).join(' vs ')})</div>
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Parameter Description</th>
+                  <th>Unit</th>
+                  ${tableHeadersHTML}
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHTML}
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top:8px">
+            <div class="report-section-title">2. Resonant Tank Gain &amp; Steady-State Time-Domain Waveforms (Set ${scopeViewSet})</div>
+            <div class="report-charts-grid">
+              <div class="report-chart-box">
+                <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:6px">Resonant Tank Gain Characteristic — K(Q, m, Fx)</div>
+                <img src="${gainImg}" alt="Resonant Tank Gain Chart" />
+              </div>
+              <div class="report-chart-box">
+                <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:6px">Steady-State Time-Domain Waveforms (Showing Set ${scopeViewSet})</div>
+                <img src="${scopeImg}" alt="Steady-State Time-Domain Waveforms" />
+              </div>
+            </div>
+          </div>
+        `
+      };
+    }
+
+    function openExportReportModal() {
+      const { nowStr, html } = buildReportContentHTML();
+      document.getElementById('reportTimestamp').textContent = `Generated: ${nowStr} | Reference: Infineon AN 2012-09`;
+      document.getElementById('reportModalBody').innerHTML = html;
+      document.getElementById('reportModal').classList.add('open');
+    }
+
+    function downloadStandaloneHTMLReport() {
+      const { nowStr, html } = buildReportContentHTML();
+      const fullDoc = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LLC Converter Analysis Report — ${nowStr}</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0f172a; margin: 28px; background: #ffffff; }
+    h1 { font-size: 20px; margin-bottom: 4px; }
+    .meta { font-family: monospace; font-size: 12px; color: #64748b; margin-bottom: 20px; }
+    .report-section-title { font-size: 14px; font-weight: 700; text-transform: uppercase; border-bottom: 2px solid #cbd5e1; padding-bottom: 5px; margin: 18px 0 10px 0; }
+    .report-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 18px; }
+    .report-table th, .report-table td { border: 1px solid #cbd5e1; padding: 6px 10px; text-align: left; }
+    .report-table th { background: #f1f5f9; }
+    .report-table td.mono { font-family: monospace; font-weight: 600; }
+    .report-charts-grid { display: flex; flex-direction: column; gap: 16px; }
+    .report-chart-box { border: 1px solid #cbd5e1; border-radius: 2px; padding: 10px; page-break-inside: avoid; }
+    .report-chart-box img { width: 100%; height: auto; display: block; }
+  </style>
+</head>
+<body>
+  <h1>LLC Full-Bridge Resonant Converter — Engineering Analysis Report</h1>
+  <div class="meta">Generated: ${nowStr} | Reference: Infineon Application Note AN 2012-09 (FHA Model)</div>
+  ${html}
+</body>
+</html>`;
+
+      const blob = new Blob([fullDoc], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `LLC_Converter_Report_${new Date().toISOString().slice(0,10)}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadCSVReport() {
+      const enabledKeys = getEnabledSetKeys();
+      const analyses = {};
+      const waveforms = {};
+      enabledKeys.forEach(k => {
+        analyses[k] = analyzeSystem(setsState[k]);
+        waveforms[k] = generateWaveforms(setsState[k], analyses[k]);
+      });
+
+      let csv = 'Parameter,Unit,' + enabledKeys.map(k => `Set ${k}`).join(',') + '\n';
+      const addRow = (name, unit, fn) => {
+        csv += `"${name}","${unit}",` + enabledKeys.map(k => `"${fn(setsState[k], analyses[k], waveforms[k])}"`).join(',') + '\n';
+      };
+
+      addRow('Vin', 'V', s => s.Vin);
+      addRow('Vo (Target)', 'V', s => s.Vo);
+      addRow('Po', 'W', s => s.Po);
+      addRow('Np/Ns', 'ratio', s => s.npNs);
+      addRow('Lr', 'uH', s => s.Lr_uH);
+      addRow('Cr', 'nF', s => s.Cr_nF);
+      addRow('Lm', 'uH', s => s.Lm_uH);
+      addRow('fr', 'kHz', (s, a) => a.fr_kHz.toFixed(3));
+      addRow('m', 'ratio', (s, a) => a.m.toFixed(4));
+      addRow('Q', 'factor', (s, a) => a.Q.toFixed(4));
+      addRow('fs', 'kHz', s => s.fs_kHz.toFixed(2));
+      addRow('Fx', 'fs/fr', (s, a) => a.Fx.toFixed(4));
+      addRow('Tank Gain K', 'gain', (s, a) => a.K.toFixed(4));
+      addRow('Vo,FHA', 'V', (s, a) => a.Vo_predicted.toFixed(2));
+      addRow('Io,FHA', 'A', (s, a) => a.Io_predicted.toFixed(3));
+      addRow('ILr_pk', 'A', (s, a, wf) => wf.ILr_pk.toFixed(3));
+      addRow('ILr_rms', 'A', (s, a, wf) => wf.ILr_rms.toFixed(3));
+      addRow('ILm_pk', 'A', (s, a, wf) => wf.ILm_pk.toFixed(3));
+
+      csv += '\n--- Time-Domain Waveforms ---\n';
+      csv += 'Sample,' + enabledKeys.map(k => `t_${k} (us),Vsw_${k} (V),ILr_${k} (A),ILm_${k} (A),ID1D4_${k} (A),ID2D3_${k} (A)`).join(',') + '\n';
+
+      const N = waveforms.A.t_us.length;
+      for (let i = 0; i < N; i++) {
+        const cols = enabledKeys.map(k => {
+          const wf = waveforms[k];
+          return `${wf.t_us[i].toFixed(4)},${wf.Vsw[i].toFixed(2)},${wf.ILr[i].toFixed(3)},${wf.ILm[i].toFixed(3)},${wf.ID1D4[i].toFixed(3)},${wf.ID2D3[i].toFixed(3)}`;
+        });
+        csv += `${i},${cols.join(',')}\n`;
+      }
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `LLC_Converter_Data_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function printEngineeringReport() {
+      const { nowStr, html } = buildReportContentHTML();
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.right = '0';
+      iframe.style.bottom = '0';
+      iframe.style.width = '0';
+      iframe.style.height = '0';
+      iframe.style.border = '0';
+      document.body.appendChild(iframe);
+
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(`<!doctype html>
+<html>
+<head>
+  <title>LLC Converter Analysis Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0f172a; margin: 18px; }
+    h1 { font-size: 18px; margin-bottom: 4px; }
+    .meta { font-family: monospace; font-size: 11px; color: #64748b; margin-bottom: 14px; }
+    .report-section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; border-bottom: 2px solid #cbd5e1; padding-bottom: 4px; margin: 14px 0 8px 0; }
+    .report-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 14px; }
+    .report-table th, .report-table td { border: 1px solid #cbd5e1; padding: 5px 8px; text-align: left; }
+    .report-table th { background: #f1f5f9; }
+    .report-table td.mono { font-family: monospace; font-weight: 600; }
+    .report-charts-grid { display: flex; flex-direction: column; gap: 12px; }
+    .report-chart-box { border: 1px solid #cbd5e1; border-radius: 2px; padding: 8px; page-break-inside: avoid; }
+    .report-chart-box img { width: 100%; max-height: 280px; object-fit: contain; display: block; }
+  </style>
+</head>
+<body>
+  <h1>LLC Full-Bridge Resonant Converter — Engineering Analysis Report</h1>
+  <div class="meta">Generated: ${nowStr} | Reference: Infineon AN 2012-09</div>
+  ${html}
+</body>
+</html>`);
+      doc.close();
+
+      setTimeout(() => {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        setTimeout(() => document.body.removeChild(iframe), 1500);
+      }, 300);
+    }
+
     // --- Main Render Loop ---
     function renderAll(skipField) {
-      const a = analyzeSystem(state);
-      const wf = generateWaveforms(state, a);
+      if (!setEnabled[activeSet]) activeSet = 'A';
+      if (!setEnabled[scopeViewSet]) scopeViewSet = activeSet;
 
+      const enabledKeys = getEnabledSetKeys();
+      const analysesMap = {};
+      enabledKeys.forEach(k => {
+        analysesMap[k] = analyzeSystem(setsState[k]);
+      });
+
+      const sActive = setsState[activeSet];
+      const aActive = analysesMap[activeSet];
+
+      // Update Sidebar Top Set Tabs (A, B, C)
+      const tabA = document.getElementById('tabSetA');
+      const tabB = document.getElementById('tabSetB');
+      const tabC = document.getElementById('tabSetC');
+      const tabBText = document.getElementById('tabSetBText');
+      const tabCText = document.getElementById('tabSetCText');
+      const compareSubBar = document.getElementById('compareSubBar');
+
+      tabA.className = 'set-tab' + (activeSet === 'A' ? ' active-a' : '');
+      tabB.className = 'set-tab' + (activeSet === 'B' ? ' active-b' : '');
+      tabC.className = 'set-tab' + (activeSet === 'C' ? ' active-c' : '');
+
+      tabBText.textContent = setEnabled.B ? 'Set B' : '+ Add Set B';
+      tabCText.textContent = setEnabled.C ? 'Set C' : '+ Add Set C';
+
+      if (activeSet !== 'A') {
+        compareSubBar.style.display = 'flex';
+        const btnCopy = document.getElementById('btnCopyFromA');
+        const btnRemove = document.getElementById('btnRemoveActiveSet');
+        btnCopy.textContent = `Copy A → ${activeSet}`;
+        btnRemove.textContent = `Remove Set ${activeSet}`;
+      } else {
+        compareSubBar.style.display = 'none';
+      }
+
+      // Update Input Fields for Active Set Only
       const setInputVal = (id, fieldName, val) => {
         const el = document.getElementById(id);
-        if (el && document.activeElement !== el && skipField !== fieldName) {
+        if (!el) return;
+        if (document.activeElement !== el && skipField !== fieldName) {
           el.value = val;
         }
       };
 
-      setInputVal('inp_Lr', 'Lr_uH', Number(state.Lr_uH.toFixed(3)));
-      setInputVal('inp_Cr', 'Cr_nF', Number(state.Cr_nF.toFixed(2)));
-      setInputVal('inp_Lm', 'Lm_uH', Number(state.Lm_uH.toFixed(3)));
-      setInputVal('inp_fr', 'fr_kHz', Number(a.fr_kHz.toFixed(2)));
-      setInputVal('inp_m', 'm', Number(a.m.toFixed(3)));
-      setInputVal('inp_Q', 'Q', Number(a.Q.toFixed(4)));
-      setInputVal('inp_fs', 'fs_kHz', Number(state.fs_kHz.toFixed(2)));
-      setInputVal('inp_Fx', 'Fx', Number(a.Fx.toFixed(3)));
-      setInputVal('inp_npNs', 'npNs', state.npNs);
-      setInputVal('inp_Vin', 'Vin', state.Vin);
-      setInputVal('inp_Vo', 'Vo', state.Vo);
-      setInputVal('inp_Io', 'Io', Number(a.Io_target.toFixed(2)));
-      setInputVal('inp_Po', 'Po', Number(state.Po.toFixed(1)));
+      setInputVal('inp_Lr', 'Lr_uH', Number(sActive.Lr_uH.toFixed(3)));
+      setInputVal('inp_Cr', 'Cr_nF', Number(sActive.Cr_nF.toFixed(2)));
+      setInputVal('inp_Lm', 'Lm_uH', Number(sActive.Lm_uH.toFixed(3)));
+      setInputVal('inp_fr', 'fr_kHz', Number(aActive.fr_kHz.toFixed(2)));
+      setInputVal('inp_m', 'm', Number(aActive.m.toFixed(3)));
+      setInputVal('inp_Q', 'Q', Number(aActive.Q.toFixed(4)));
+      setInputVal('inp_fs', 'fs_kHz', Number(sActive.fs_kHz.toFixed(2)));
+      setInputVal('inp_Fx', 'Fx', Number(aActive.Fx.toFixed(3)));
+      setInputVal('inp_npNs', 'npNs', sActive.npNs);
+      setInputVal('inp_Vin', 'Vin', sActive.Vin);
+      setInputVal('inp_Vo', 'Vo', sActive.Vo);
+      setInputVal('inp_Io', 'Io', Number(aActive.Io_target.toFixed(2)));
+      setInputVal('inp_Po', 'Po', Number(sActive.Po.toFixed(1)));
 
-      document.getElementById('turnsRatioText').textContent = `1 : ${(1 / Math.max(state.npNs, 0.0001)).toFixed(1)}`;
-      document.getElementById('hdrFs').textContent = `${state.fs_kHz.toFixed(2)} kHz`;
-      document.getElementById('hdrFx').textContent = a.Fx.toFixed(3);
-      document.getElementById('hdrK').textContent = a.K.toFixed(3);
-      document.getElementById('hdrVo').textContent = `${a.Vo_predicted.toFixed(1)} V`;
-      document.getElementById('hdrIo').textContent = `${a.Io_predicted.toFixed(2)} A`;
+      document.getElementById('turnsRatioText').textContent = `1 : ${(1 / Math.max(sActive.npNs, 0.0001)).toFixed(1)}`;
 
-      document.getElementById('card_Vo').textContent = a.Vo_predicted.toFixed(1);
-      document.getElementById('card_Vo_target').textContent = `Target Vo: ${state.Vo.toFixed(1)} V`;
-      document.getElementById('card_Io').textContent = a.Io_predicted.toFixed(2);
-      document.getElementById('card_Io_target').textContent = `Target Io: ${a.Io_target.toFixed(2)} A`;
-      document.getElementById('card_K').textContent = a.K.toFixed(4);
-      document.getElementById('card_K_req').textContent = `Req Gain: ${a.K_required.toFixed(3)}`;
-      document.getElementById('card_Rac').textContent = a.Rac.toFixed(3);
-      document.getElementById('card_Ro').textContent = a.Ro.toFixed(2);
-      document.getElementById('card_FxPeak').textContent = a.Fx_peak.toFixed(3);
-      document.getElementById('card_fsPeak').textContent = `(${a.fs_peak_kHz.toFixed(1)}k)`;
-      document.getElementById('card_K_peak').textContent = `Peak Kmax: ${a.K_peak.toFixed(3)}`;
+      const hdrTag = document.getElementById('hdrSetTag');
+      hdrTag.textContent = `[Set ${activeSet}]`;
+      hdrTag.style.color = SET_COLORS[activeSet].main;
 
-      document.getElementById('dragHint').textContent = `Click or drag operating point on curve to tune fs (${state.fs_kHz.toFixed(2)} kHz)`;
+      document.getElementById('hdrFs').textContent = `${sActive.fs_kHz.toFixed(2)} kHz`;
+      document.getElementById('hdrFx').textContent = aActive.Fx.toFixed(3);
+      document.getElementById('hdrFx').style.color = SET_COLORS[activeSet].main;
+      document.getElementById('hdrK').textContent = aActive.K.toFixed(3);
+      document.getElementById('hdrVo').textContent = `${aActive.Vo_predicted.toFixed(1)} V`;
+      document.getElementById('hdrIo').textContent = `${aActive.Io_predicted.toFixed(2)} A`;
 
-      // Mode Badge
+      // Section 3 Telemetry Table (Strictly Active Set Only)
+      document.getElementById('card_Vo').textContent = aActive.Vo_predicted.toFixed(1);
+      document.getElementById('card_Vo_target').textContent = `Target Vo: ${sActive.Vo.toFixed(1)} V`;
+      document.getElementById('card_Io').textContent = aActive.Io_predicted.toFixed(2);
+      document.getElementById('card_Io_target').textContent = `Target Io: ${aActive.Io_target.toFixed(2)} A`;
+      document.getElementById('card_K').textContent = aActive.K.toFixed(4);
+      document.getElementById('card_K_req').textContent = `Req Gain: ${aActive.K_required.toFixed(3)}`;
+      document.getElementById('card_Rac').textContent = aActive.Rac.toFixed(3);
+      document.getElementById('card_Ro').textContent = aActive.Ro.toFixed(2);
+      document.getElementById('card_FxPeak').textContent = aActive.Fx_peak.toFixed(3);
+      document.getElementById('card_fsPeak').textContent = `(${aActive.fs_peak_kHz.toFixed(1)}k)`;
+      document.getElementById('card_K_peak').textContent = `Peak Kmax: ${aActive.K_peak.toFixed(3)}`;
+
+      // Mode Indicator
       const badge = document.getElementById('modeBadge');
-      const dot = document.getElementById('modeDot');
       const text = document.getElementById('modeText');
-      if (a.region === 'CAPACITIVE_HAZARD') {
+      const prefix = enabledKeys.length > 1 ? `[Set ${activeSet}] ` : '';
+      if (aActive.region === 'CAPACITIVE_HAZARD') {
         badge.style.background = '#fef2f2';
-        badge.style.borderColor = '#fca5a5';
+        badge.style.borderColor = '#dc2626';
         badge.style.color = '#991b1b';
-        dot.style.background = '#dc2626';
-        text.textContent = 'CAPACITIVE REGION (ZCS — HARD COMMUTATION HAZARD)';
-      } else if (a.region === 'BELOW_RESONANCE') {
+        text.textContent = prefix + 'CAPACITIVE REGION (ZCS — HARD COMMUTATION HAZARD)';
+      } else if (aActive.region === 'BELOW_RESONANCE') {
         badge.style.background = '#ecfdf5';
-        badge.style.borderColor = '#6ee7b7';
+        badge.style.borderColor = '#059669';
         badge.style.color = '#065f46';
-        dot.style.background = '#059669';
-        text.textContent = 'INDUCTIVE — BELOW RESONANCE (ZVS + SECONDARY ZCS)';
-      } else if (a.region === 'AT_RESONANCE') {
+        text.textContent = prefix + 'INDUCTIVE — BELOW RESONANCE (ZVS + SECONDARY ZCS)';
+      } else if (aActive.region === 'AT_RESONANCE') {
         badge.style.background = '#eff6ff';
-        badge.style.borderColor = '#93c5fd';
+        badge.style.borderColor = '#2563eb';
         badge.style.color = '#1e40af';
-        dot.style.background = '#2563eb';
-        text.textContent = 'INDUCTIVE — AT RESONANCE (OPTIMAL UNITY GAIN K = 1.0)';
+        text.textContent = prefix + 'INDUCTIVE — AT RESONANCE (OPTIMAL UNITY GAIN K = 1.0)';
       } else {
         badge.style.background = '#f1f5f9';
-        badge.style.borderColor = '#cbd5e1';
-        badge.style.color = '#1e293b';
-        dot.style.background = '#475569';
-        text.textContent = 'INDUCTIVE — ABOVE RESONANCE (ZVS BUCK MODE)';
+        badge.style.borderColor = '#64748b';
+        badge.style.color = '#0f172a';
+        text.textContent = prefix + 'INDUCTIVE — ABOVE RESONANCE (ZVS BUCK MODE)';
       }
 
-      // Scope Telemetry
-      document.getElementById('stat_Vsw').textContent = `±${state.Vin} V`;
-      document.getElementById('stat_VoIo').textContent = `${a.Vo_predicted.toFixed(1)} V / ${a.Io_predicted.toFixed(2)} A`;
-      document.getElementById('stat_ILr').textContent = `${wf.ILr_pk.toFixed(1)} A / ${wf.ILr_rms.toFixed(1)} A`;
-      document.getElementById('stat_ILm').textContent = `${wf.ILm_pk.toFixed(2)} A`;
-      document.getElementById('stat_fw').textContent = `${(wf.freewheelingRatio * 100).toFixed(1)}%`;
+      // --- Steady-State Time-Domain Waveforms Single-Set Switcher & Freewheeling Readout ---
+      const wfSwitcherWrap = document.getElementById('wfSwitcherWrap');
+      const btnWfA = document.getElementById('btnWfSetA');
+      const btnWfB = document.getElementById('btnWfSetB');
+      const btnWfC = document.getElementById('btnWfSetC');
 
-      drawGainChart(a);
-      drawScope(state, a, wf);
+      if (enabledKeys.length > 1) {
+        wfSwitcherWrap.style.display = 'inline-flex';
+        btnWfB.style.display = setEnabled.B ? 'inline-flex' : 'none';
+        btnWfC.style.display = setEnabled.C ? 'inline-flex' : 'none';
+        btnWfA.className = 'wf-view-btn' + (scopeViewSet === 'A' ? ' active-a' : '');
+        btnWfB.className = 'wf-view-btn' + (scopeViewSet === 'B' ? ' active-b' : '');
+        btnWfC.className = 'wf-view-btn' + (scopeViewSet === 'C' ? ' active-c' : '');
+      } else {
+        wfSwitcherWrap.style.display = 'none';
+      }
+
+      const sScope = setsState[scopeViewSet];
+      const aScope = analysesMap[scopeViewSet];
+      const wfScope = generateWaveforms(sScope, aScope);
+
+      document.getElementById('stat_fw').textContent = `${(wfScope.freewheelingRatio * 100).toFixed(1)}%`;
+
+      drawGainChart(analysesMap);
+      drawScope(scopeViewSet, sScope, aScope, wfScope);
     }
 
     // --- Event Listeners Setup ---
@@ -1797,15 +2466,77 @@
         });
       });
 
+      // Parameter Set A / Set B / Set C Comparison Controls
+      document.getElementById('tabSetA').onclick = () => {
+        activeSet = 'A';
+        scopeViewSet = 'A';
+        renderAll();
+      };
+
+      document.getElementById('tabSetB').onclick = () => {
+        setEnabled.B = true;
+        activeSet = 'B';
+        scopeViewSet = 'B';
+        renderAll();
+      };
+
+      document.getElementById('tabSetC').onclick = () => {
+        setEnabled.C = true;
+        activeSet = 'C';
+        scopeViewSet = 'C';
+        renderAll();
+      };
+
+      document.getElementById('btnCopyFromA').onclick = () => {
+        if (activeSet !== 'A') {
+          setsState[activeSet] = { ...setsState.A };
+          renderAll();
+        }
+      };
+
+      document.getElementById('btnRemoveActiveSet').onclick = () => {
+        if (activeSet !== 'A') {
+          setEnabled[activeSet] = false;
+          activeSet = 'A';
+          scopeViewSet = 'A';
+          renderAll();
+        }
+      };
+
+      // Waveform Single-Set View Switcher Buttons
+      document.getElementById('btnWfSetA').onclick = () => {
+        scopeViewSet = 'A';
+        activeSet = 'A';
+        renderAll();
+      };
+
+      document.getElementById('btnWfSetB').onclick = () => {
+        if (setEnabled.B) {
+          scopeViewSet = 'B';
+          activeSet = 'B';
+          renderAll();
+        }
+      };
+
+      document.getElementById('btnWfSetC').onclick = () => {
+        if (setEnabled.C) {
+          scopeViewSet = 'C';
+          activeSet = 'C';
+          renderAll();
+        }
+      };
+
       document.getElementById('btnLockPeak').onclick = () => {
-        const a = analyzeSystem(state);
-        state.fs_kHz = Number(a.fs_peak_kHz.toFixed(2));
+        const s = getActiveState();
+        const a = analyzeSystem(s);
+        s.fs_kHz = Number(a.fs_peak_kHz.toFixed(2));
         renderAll();
       };
 
       document.getElementById('btnLockFr').onclick = () => {
-        const a = analyzeSystem(state);
-        state.fs_kHz = Number(a.fr_kHz.toFixed(2));
+        const s = getActiveState();
+        const a = analyzeSystem(s);
+        s.fs_kHz = Number(a.fr_kHz.toFixed(2));
         renderAll();
       };
 
@@ -1815,7 +2546,7 @@
         renderAll();
       };
 
-      // Interactive Dragging on Gain Canvas
+      // Interactive Dragging on Gain Canvas (Supports Set A, Set B, Set C)
       const gainCanvas = document.getElementById('gainCanvas');
       const updateFxFromPointer = clientX => {
         const rect = gainCanvas.getBoundingClientRect();
@@ -1823,12 +2554,36 @@
         const { left, right, minFx, maxFx } = gainChartGeometry;
         const ratio = (x - left) / Math.max(right - left, 1);
         const fx = Math.min(maxFx, Math.max(0.15, minFx + ratio * (maxFx - minFx)));
-        const a = analyzeSystem(state);
-        state.fs_kHz = Number((fx * a.fr_kHz).toFixed(2));
+
+        const targetState = setsState[draggingTargetSet] || setsState.A;
+        const a = analyzeSystem(targetState);
+        targetState.fs_kHz = Number((fx * a.fr_kHz).toFixed(2));
         renderAll();
       };
 
       gainCanvas.addEventListener('pointerdown', e => {
+        const rect = gainCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const enabledKeys = getEnabledSetKeys();
+        let closestKey = activeSet;
+        let minDist = 22;
+        enabledKeys.forEach(k => {
+          const pt = gainChartGeometry.opCoords[k];
+          if (pt) {
+            const d = Math.hypot(x - pt.x, y - pt.y);
+            if (d < minDist) {
+              minDist = d;
+              closestKey = k;
+            }
+          }
+        });
+
+        activeSet = closestKey;
+        scopeViewSet = closestKey;
+        draggingTargetSet = closestKey;
+
         gainCanvas.setPointerCapture(e.pointerId);
         isDraggingGain = true;
         gainCanvas.style.cursor = 'grabbing';
@@ -1848,7 +2603,7 @@
         }
       });
 
-      // Formula Buttons & Cards
+      // Formula Buttons & Table Cells
       document.querySelectorAll('[data-formula]').forEach(el => {
         el.addEventListener('click', () => openFormulaModal(el.getAttribute('data-formula')));
       });
@@ -1862,6 +2617,20 @@
           document.getElementById('formulaModal').classList.remove('open');
         }
       });
+
+      // Report Modal & Export Buttons
+      document.getElementById('btnExportReport').onclick = openExportReportModal;
+      document.getElementById('btnCloseReportModal').onclick = () => {
+        document.getElementById('reportModal').classList.remove('open');
+      };
+      document.getElementById('reportModal').addEventListener('click', e => {
+        if (e.target.id === 'reportModal') {
+          document.getElementById('reportModal').classList.remove('open');
+        }
+      });
+      document.getElementById('btnPrintReport').onclick = printEngineeringReport;
+      document.getElementById('btnDownloadHTML').onclick = downloadStandaloneHTMLReport;
+      document.getElementById('btnDownloadCSV').onclick = downloadCSVReport;
 
       window.addEventListener('resize', () => renderAll());
       renderAll();
